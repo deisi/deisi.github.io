@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Security on MSD Blog</title>
+    <link>https://msdblog.de/tags/security/</link>
+    <description>Recent content in Security on MSD Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>de</language>
+    <copyright>&amp;copy; &lt;a href=&#34;https://github.com/deisi&#34;&gt;Malte Deiseroth&lt;/a&gt; 2020</copyright>
+    <lastBuildDate>Tue, 04 Feb 2020 12:47:36 +0100</lastBuildDate>
+    
+	<atom:link href="https://msdblog.de/tags/security/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>In House Certificate Authority with Eeasy RSA</title>
+      <link>https://msdblog.de/posts/easy_rsa/</link>
+      <pubDate>Tue, 04 Feb 2020 12:47:36 +0100</pubDate>
+      
+      <guid>https://msdblog.de/posts/easy_rsa/</guid>
+      <description>Over the years I grew a fairly sophisticated network at home. Currently I have a x86 server and a raspberry pi running 24/7. On the x86 Server there are many services like homeassistant, tvheadend, kodi, mopidy, snapcast and a couple more. The raspberry pi is used in my bathroom to play music and measure humidity and temperature. Anyway, most of the services in a local network run without encryption. Take mopidy e.</description>
+    </item>
+    
+    <item>
+      <title>Zwei Faktor Authentifizierung (2FA) mit SSH</title>
+      <link>https://msdblog.de/posts/2fa/</link>
+      <pubDate>Tue, 08 Jan 2019 18:47:05 +0100</pubDate>
+      
+      <guid>https://msdblog.de/posts/2fa/</guid>
+      <description>Es zeigt sich, das zwei Faktor Authentifizierung (2FA) mit SSH sowohl gut, als auch schlecht funktioniert. Die Installation und die initiale Inbetriebnahme ist verboten einfach, allerdings steckt der Teufel im Detail.
+1. Google PAM Modul Installieren PAM steht für Pluggable Authentication Module und bezeichnet den Namen unter dem google seinen Service für 2FA führt. Ein anderer Begriff denn man öfter mal ließt ist Time-based One-Time Password (TOTP). Dies bezeichnet das sich zeitlich ändernde Passwort, das mittels Google Authenticator zur Verfügung gestellt wird.</description>
+    </item>
+    
+  </channel>
+</rss>

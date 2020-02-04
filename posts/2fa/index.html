@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"  lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>Zwei Faktor Authentifizierung (2FA) mit SSH | MSD Blog</title>
+
+
+
+<link href="https://msdblog.de/index.xml" rel="alternate" type="application/rss+xml" title="MSD Blog" />
+
+<link rel="stylesheet" href="/css/style.css"/><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="canonical" href="https://msdblog.de/posts/2fa/">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+</head>
+<body>
+<section class="section">
+  <div class="container">
+    <nav id="nav-main" class="nav">
+      <div id="nav-name" class="nav-left">
+        <a id="nav-anchor" class="nav-item" href="https://msdblog.de">
+          <h1 id="nav-heading" class="title is-4">MSD Blog</h1>
+        </a>
+      </div>
+      <div class="nav-right">
+        <nav id="nav-items" class="nav-item level is-mobile"><a class="level-item" aria-label="github" href='https://github.com/deisi'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+    
+  </svg></i>
+            </span>
+          </a><a class="level-item" aria-label="email" href='mailto:mdeiseroth88@gmail.com'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+    <polyline points="22,6 12,13 2,6"/>
+    
+  </svg></i>
+            </span>
+          </a><a class="level-item" aria-label="rss" href='/index.xml'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle>
+    
+  </svg></i>
+            </span>
+          </a></nav>
+      </div>
+    </nav>
+
+    <nav class="nav">
+      
+
+      
+      <div class="nav-right"><a class="nav-item" href="https://msdblog.de/about">
+          <h2 class="title is-5">About/Impressum/Datenschutz</h2>
+        </a></div>
+      
+    </nav>
+
+  </div>
+  <script src="/js/navicon-shift.js"></script>
+</section>
+<section class="section">
+  <div class="container">
+    <div class="subtitle tags is-6 is-pulled-right">
+      
+      
+<a class="subtitle is-6" href="/tags/security">#Security</a>
+
+
+
+  
+  | <a class="subtitle is-6" href="/tags/howto">#HowTo</a>
+  
+
+      
+    </div>
+    <h2 class="subtitle is-6">January 8, 2019</h2>
+    <h1 class="title">Zwei Faktor Authentifizierung (2FA) mit SSH</h1>
+    
+    <div class="content">
+      <p>Es zeigt sich, das zwei Faktor Authentifizierung (2FA) mit SSH sowohl gut, als
+auch schlecht funktioniert. Die Installation und die initiale Inbetriebnahme ist
+verboten einfach, allerdings steckt der Teufel im Detail.</p>
+<h2 id="1-google-pam-modul-installieren">1. Google PAM Modul Installieren</h2>
+<p>PAM steht für <strong>P</strong>luggable <strong>A</strong>uthentication <strong>M</strong>odule und bezeichnet den
+Namen unter dem google seinen Service für 2FA führt. Ein anderer Begriff denn
+man öfter mal ließt ist Time-based One-Time Password (TOTP). Dies bezeichnet das
+sich zeitlich ändernde Passwort, das mittels Google Authenticator zur Verfügung
+gestellt wird.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo apt-get update
+$ sudo apt-get install libpam-google-authenticator
+</code></pre></div><p>Unter Arch Linux muss man noch <code>qrencode</code> installieren, wenn man den QR code
+direkt im Browser angezeigt bekommen will</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo pacman -S qrencode libpam-google-authenticator
+</code></pre></div><p>Als nächstes hangelt man sich durch die interaktive Einrichtung.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ google-authenticator
+</code></pre></div><p>Die ist sehr selbsterklärend, also verzichte ich auf eine Beschreibung. Ich
+empfehle euch allerdings die ganzen <strong>emergency codes</strong> die ihr am Ende bekommt
+irgendwo ab zu speichern. Im Falle eines Falles sind sie dann da.</p>
+<p><img src="/2fa/00.png" alt="img"></p>
+<p>Diesen QR Code könnt ihr dann mit dem <code>Google Authenticator</code> fotografieren. Und
+zack läuft das Ding schon mal auf eurem Handy.</p>
+<h2 id="2-aktivieren-des-moduls">2. Aktivieren des Moduls</h2>
+<p>Als nächstes muss noch das Modul für die SSH verbindung aktiviert werden.
+Hierfür müssen zwei Dateien editiert werden. In der <code>/etc/pam.d/sshd</code></p>
+<pre><code class="language-config" data-lang="config">auth required pam_google_authenticator.so
+</code></pre><p>ans Ende anfügen und als zweites, in der <code>/etc/ssh/sshd_config</code></p>
+<pre><code class="language-config" data-lang="config">ChallengeResponseAuthentication yes
+AuthenticationMethods keyboard-interactive
+</code></pre><p>eintragen.</p>
+<h2 id="3-ssh-daemon-neu-starten">3. SSH Daemon neu starten</h2>
+<pre><code>sudo systemctl restart sshd.service
+</code></pre><p>Es ist eine gute Idee die aktuell aktive Shell nicht zu schließen, sondern statt
+dessen die Verbindung mit einer neuen Shell zu testen. Hier sollte jetzt erst
+nach dem Passwort und dann nach einem <code>Verification code</code> gefragt werden. Beim
+<code>Verification code</code> handelt es sich um den gerade aktiven Google Authenticator
+Key. Beim eingeben des Keys müsst ihr euch übrigens nicht tot hetzen, da immer
+mindestens 3, vielleicht sogar 17 Keys gleichzeitig gültig sind.</p>
+<h2 id="4-ssh-key-statt-passwort">4. SSH Key statt Passwort</h2>
+<p>Wenn ihr vorher anstelle von Passwörtern ssh Keys verwendet habt, so wie ich,
+dann dürfte euch aufgefallen sein, dass ihr auf einmal trotzdem Passwörter
+eingeben müsst. Der SSH Key wird einfach ignoriert. Dabei ist es auch egal, dass
+ihr bei <code>PasswordAuthentication no</code> eingegeben habt. Der SSH Key wird einfach
+ignoriert.</p>
+<p>Bisher habe ich es nicht hinbekommen per default Keys und als Fallback ein
+Passwort zu haben. Stattdessen kann ich euch nur sagen wie man komplett auf das
+Passwort verzichtet.</p>
+<p>Öffnet dazu wieder <code>/etc/pam.d/sshd</code> und kommentiert die Zeile:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Standard Un*x authentication.</span>
+<span style="color:#75715e">#@include common-auth</span>
+</code></pre></div><p>wie gezeigt aus und startet den SSH Daemon neu.</p>
+<p>Im Internet kursieren verschiedene Lösungen die die <code>AuthenticationMethods</code>
+ändern, aber alles was ich bisher ausprobiert habe, hatte nicht den gewünschten
+Effekt. Wer eine Lösung kennt, immer her damit.</p>
+<h2 id="quellen">Quellen</h2>
+<p><a href="https://hostadvice.com/how-to/how-to-enable-two-factor-authentication-on-ubuntu-18-04-vps/">1</a>
+<a href="https://www.linode.com/docs/security/authentication/use-one-time-passwords-for-two-factor-authentication-with-ssh-on-ubuntu-16-04-and-debian-8/">2</a>
+<a href="https://blog.webnersolutions.com/ubuntu-google-authenticator-not-working-with-ssh-keys">3</a></p>
+
+      
+      <div class="related">
+</div>
+      
+    </div>
+    
+  </div>
+</section>
+
+    <script src="/js/copycode.js"></script>
+
+
+
+<section class="section">
+  <div class="container has-text-centered">
+    <p>&copy; <a href="https://github.com/deisi">Malte Deiseroth</a> 2020</p>
+    
+      <p>Powered by <a href="https://gohugo.io/">Hugo</a> &amp; <a href="https://github.com/ribice/kiss">Kiss</a>.</p>
+    
+  </div>
+</section>
+
+
+
+</body>
+</html>
+

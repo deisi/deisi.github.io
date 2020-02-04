@@ -1,0 +1,55 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>MSD Blog</title>
+    <link>https://msdblog.de/</link>
+    <description>Recent content on MSD Blog</description>
+    <generator>Hugo - gohugo.io</generator>
+    <language>en</language>
+    <contact>mdeiseroth88@gmail.com</contact>
+    <copyright>&copy; <a href="https://github.com/deisi">Malte Deiseroth</a> 2020</copyright>
+    
+        <atom:link href="https://msdblog.de/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Posts</title>
+      <link>https://msdblog.de/posts/</link>
+      <pubDate>Tue, 04 Feb 2020 12:47:36 +0100</pubDate>
+      <author>Malte Deiseroth</author>
+      <guid>https://msdblog.de/posts/</guid>
+      <description></description>
+      
+      <content></content>
+      
+    </item>
+    
+    <item>
+      <title>About/Impressum/Datenschutz</title>
+      <link>https://msdblog.de/about/</link>
+      <pubDate>Wed, 09 Jan 2019 17:19:19 +0100</pubDate>
+      <author>Malte Deiseroth</author>
+      <guid>https://msdblog.de/about/</guid>
+      <description></description>
+      
+      <content>&lt;h1 id=&#34;über-mich&#34;&gt;Über Mich&lt;/h1&gt;
+&lt;figure&gt;
+    &lt;img src=&#34;https://msdblog.de/potrait.jpg&#34; width=&#34;200px&#34;/&gt; 
+&lt;/figure&gt;
+
+&lt;p&gt;Malte Deiseroth&lt;/p&gt;
+&lt;p&gt;Ober-Saulheimerstr 7&lt;/p&gt;
+&lt;p&gt;55291 Saulheim&lt;/p&gt;
+&lt;h1 id=&#34;was-wird-gespeichert&#34;&gt;Was wird gespeichert&lt;/h1&gt;
+&lt;p&gt;Prinzipiell so wenig wie möglich. Allerdings benutze ich aktuell noch
+googleAnalytics damit ich die Seite nicht im kompletten Blindflug betreiben
+muss. Um DSGVO konform zu sein werden IP Adressen vor der Übermittlung an
+google anonymisiert. Wie genau, siehe &lt;a href=&#34;https://gohugo.io/about/hugo-and-gdpr/&#34;&gt;hier&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Der Apache Server bekommt aber deine IP Adresse wenn du dich auf der Seite
+tummelst. Dass kann ich/man nicht wirklich verhindern. Die Apache Logs werden
+automatisch nach 7 Tagen gelöscht.&lt;/p&gt;
+</content>
+      
+    </item>
+    
+  </channel>
+</rss>
