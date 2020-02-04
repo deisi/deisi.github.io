@@ -40,13 +40,7 @@
 &lt;p&gt;Ober-Saulheimerstr 7&lt;/p&gt;
 &lt;p&gt;55291 Saulheim&lt;/p&gt;
 &lt;h1 id=&#34;was-wird-gespeichert&#34;&gt;Was wird gespeichert&lt;/h1&gt;
-&lt;p&gt;Prinzipiell so wenig wie möglich. Allerdings benutze ich aktuell noch
-googleAnalytics damit ich die Seite nicht im kompletten Blindflug betreiben
-muss. Um DSGVO konform zu sein werden IP Adressen vor der Übermittlung an
-google anonymisiert. Wie genau, siehe &lt;a href=&#34;https://gohugo.io/about/hugo-and-gdpr/&#34;&gt;hier&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;Der Apache Server bekommt aber deine IP Adresse wenn du dich auf der Seite
-tummelst. Dass kann ich/man nicht wirklich verhindern. Die Apache Logs werden
-automatisch nach 7 Tagen gelöscht.&lt;/p&gt;
+&lt;p&gt;Von mir nix, aber ich weiß nicht genau was github alles speichtert.&lt;/p&gt;
 </content>
       
     </item>
