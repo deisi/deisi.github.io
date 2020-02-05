@@ -36,11 +36,14 @@
     &lt;img src=&#34;https://deisi.github.io/potrait.jpg&#34; width=&#34;200px&#34;/&gt; 
 &lt;/figure&gt;
 
-&lt;p&gt;Malte Deiseroth&lt;/p&gt;
-&lt;p&gt;Ober-Saulheimerstr 7&lt;/p&gt;
-&lt;p&gt;55291 Saulheim&lt;/p&gt;
+&lt;p&gt;Malte Deiseroth
+Ober-Saulheimerstr 7
+55291 Saulheim&lt;/p&gt;
 &lt;h1 id=&#34;was-wird-gespeichert&#34;&gt;Was wird gespeichert&lt;/h1&gt;
-&lt;p&gt;Von mir nix, aber ich weiß nicht genau was github alles speichtert.&lt;/p&gt;
+&lt;p&gt;Um Zugriffszahlen zu erhalten benutze ich GoogleAnalytics(GA). Allerdings werden
+die IP Adressen anonymisiert. Konkret bedeutet das, dass das letzt Byte auf 0
+gesetzt wird. Weiter gibt es keine Cookies, sondern der Session Storage wird
+benutzt um die GA ClientID zu speichern.&lt;/p&gt;
 </content>
       
     </item>
