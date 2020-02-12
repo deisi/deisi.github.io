@@ -6,10 +6,20 @@
     <description>Recent content in Posts on Deisi Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>de</language>
-    <lastBuildDate>Tue, 04 Feb 2020 12:47:36 +0100</lastBuildDate>
+    <lastBuildDate>Tue, 11 Feb 2020 17:54:03 +0100</lastBuildDate>
     
 	<atom:link href="https://deisi.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Daten Statt Nachrichten</title>
+      <link>https://deisi.github.io/posts/daten_statt_nachrichten/</link>
+      <pubDate>Tue, 11 Feb 2020 17:54:03 +0100</pubDate>
+      
+      <guid>https://deisi.github.io/posts/daten_statt_nachrichten/</guid>
+      <description>Mich stört immer mehr die Informationsauswahl bei redaktionellen Inhalten. Versteht mich jetzt nicht falsch, ich will hier nicht die Mähr von der &amp;ldquo;Lügenpresse&amp;rdquo; nähren. Aber es ist leider so, dass Nachrichten kein repräsentatives Bild der Realität zeichnen. Stattdessen sind Katastrophen und Probleme überrepräsentiert und Erfolge und positives unterrepräsentiert. Das liegt wohl in der Natur der Sache, aber es hilft sich das gelegentlich zu verdeutlichen.
+Wer sich über gesellschaftlich relevante Daten informieren will, dem empfehle ich einen Blick auf gapminder.</description>
+    </item>
     
     <item>
       <title>In House Certificate Authority with Eeasy RSA</title>
