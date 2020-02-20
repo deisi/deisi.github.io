@@ -6,10 +6,19 @@
     <description>Recent content in HowTo on Deisi Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>de</language>
-    <lastBuildDate>Tue, 04 Feb 2020 12:47:36 +0100</lastBuildDate>
+    <lastBuildDate>Wed, 19 Feb 2020 08:00:00 +0100</lastBuildDate>
     
 	<atom:link href="https://deisi.github.io/tags/howto/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>DSGVO mit Disqus und GoogleAnalytics</title>
+      <link>https://deisi.github.io/posts/privacy/</link>
+      <pubDate>Wed, 19 Feb 2020 08:00:00 +0100</pubDate>
+      
+      <guid>https://deisi.github.io/posts/privacy/</guid>
+      <description>Ich habe schon gerne etwas Statistik über den Blog. Man kann jetzt drüber streiten ob man unbedingt GoogleAnalytics (GA) braucht, aber wenigstens die Zugriffszahlen interessieren mich dann schon. Auch finde ich, dass eine Kommentarfunktion dazu gehört. Da ich den Blog nicht selbst hoste, sondern auf github. Kann ich aber nicht einfach das über den Apache log o.ä. machen. Darum werde ich erst mal sowohl GA, als auch Disqus einbinden bis ich was besseres finde.</description>
+    </item>
     
     <item>
       <title>In House Certificate Authority with Eeasy RSA</title>
