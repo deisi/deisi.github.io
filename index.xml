@@ -12,14 +12,293 @@
     
     
     <item>
-      <title>Posts</title>
-      <link>https://deisi.github.io/posts/</link>
+      <title>Verschlüsselung mittels PLZ bei einer Bank!?!</title>
+      <link>https://deisi.github.io/posts/sichere_banken/</link>
+      <pubDate>Fri, 28 Feb 2020 08:30:00 +0100</pubDate>
+      <author>Malte Deiseroth</author>
+      <guid>https://deisi.github.io/posts/sichere_banken/</guid>
+      <description>Banken verschlüsseln mit PLZ...</description>
+      
+      <content>&lt;p&gt;Ich habe gerade ein Konto bei einer großen deutschen online Bank eröffnet und
+ich traue meinen Augen kaum. Ich zitiere mal aus der Mail:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;...
+im Anhang bekommen Sie wichtige Unterlagen für Ihr Konto - als PDF-Date
+und verschlüsselt. Bitte geben Sie beim Öffnen des PDFs einfach Ihre 
+Postleitzahl ein.
+...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;WTF????? Euer Ernst???? Ein Witz oder? Habe ich gedacht, aber nein, echt Wahr.
+Verschlüsselung quasi mit Passwort in der selben Mail. Welches Genie war den
+hier am Werk?&lt;/p&gt;
+
+&lt;p&gt;Hier wurde auf ganzer Linie nicht verstanden was die Rolle von Verschlüsselung
+beim Thema Sicherheit ist. Der Bank muss bewusst sein, das e-mails nicht Sicher
+sind. Darum auch die Verschlüsselung, aber warum dann mit einer 5 stelligen Zahl
+bei einem angehängten PDF? Das sind, stellen wir uns mal doof, gerade mal
+100.000 Kombinationsmöglichkeiten. Als echt arme Hacker leisten wir uns nur
+Hardware mit 1. Versuch/Sekunde, dann brauchen wir immer noch weniger als 30
+Stunden um garantiert die richtige Nummer zu finden. Ich habe es nicht
+ausprobiert, aber ich denke ein erfolgreicher Angriff auf Minutenskala ist ohne
+Probleme möglich. Man muss ja nur PLZs ausprobieren, das seht ja unverschlüsselt
+in der Mail und 00000 gibt es z.B. nicht. Auch ist 1 Versuch/Sekunde nicht
+wirklich Zeitgemäß.&lt;/p&gt;
+
+&lt;p&gt;Ein Leser dieses Blogs hat es sogar noch leichter, denn ich bin von Gesetzes
+wegen verpflichtet meine Adresse im Impressum an zu geben. Danke also für nix.&lt;/p&gt;
+
+&lt;p&gt;Man kann jetzt argumentieren, dass die Informationen in dem PDF nicht so wichtig
+sind. Stimmt auch, aber nichts desto trotz handelt es sich um personenbezogene
+Daten und die werden hier wirklich nicht angemessen geschützt. In Zeiten des
+Identitätsdiebstahls fühlt sich das alles nicht sehr gut an.&lt;/p&gt;
+
+&lt;p&gt;Das es keine praktikable alternative Lösung gibt, kann auch nicht stimmen. Es
+gibt mittels Webinterface ja einen sicheren bidirektionalen Kanal zwischen der
+Bank und mir. Warum der nicht für die Übermittlung genutzt wird ist mir völlig
+schleierhaft. Nach der Aktion habe ich schon fast keinen Bock mehr auf die Bank.
+Wenn die mein Geld so so gut schützen wie meine Daten, dann bin ich bald Pleite.&lt;/p&gt;
+</content>
+      
+    </item>
+    
+    <item>
+      <title>DSGVO mit Disqus und GoogleAnalytics</title>
+      <link>https://deisi.github.io/posts/privacy/</link>
       <pubDate>Wed, 19 Feb 2020 08:00:00 +0100</pubDate>
       <author>Malte Deiseroth</author>
-      <guid>https://deisi.github.io/posts/</guid>
+      <guid>https://deisi.github.io/posts/privacy/</guid>
       <description></description>
       
-      <content></content>
+      <content>
+
+&lt;p&gt;Ich habe schon gerne etwas Statistik über den Blog. Man kann jetzt drüber
+streiten ob man unbedingt GoogleAnalytics (GA) braucht, aber wenigstens die
+Zugriffszahlen interessieren mich dann schon. Auch finde ich, dass eine
+Kommentarfunktion dazu gehört. Da ich den Blog nicht selbst hoste, sondern auf
+github. Kann ich aber nicht einfach das über den Apache log o.ä. machen. Darum
+werde ich erst mal sowohl GA, als auch Disqus einbinden bis ich was besseres
+finde. Allerdings mit den DSGVO privacy Einstellungen von hugo. Das Bedeutet,
+ich benutze folgende &lt;code&gt;config.toml&lt;/code&gt; für den Blog.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-toml&#34;&gt;[privacy]
+  [privacy.disqus]
+    disable = false
+  [privacy.googleAnalytics]
+    anonymizeIP = true
+    disable = false
+    respectDoNotTrack = true
+    useSessionStorage = tru
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;EDIT: Inzwischen habe ich &lt;a href=&#34;https://staticman.net/docs/&#34;&gt;https://staticman.net/docs/&lt;/a&gt; gefunden. Ich denke das
+werde ich bald mal umsetzen.&lt;/p&gt;
+
+&lt;h2 id=&#34;quellen&#34;&gt;Quellen&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://gohugo.io/about/hugo-and-gdpr/&#34;&gt;https://gohugo.io/about/hugo-and-gdpr/&lt;/a&gt;&lt;/p&gt;
+</content>
+      
+    </item>
+    
+    <item>
+      <title>Daten Statt Nachrichten</title>
+      <link>https://deisi.github.io/posts/daten_statt_nachrichten/</link>
+      <pubDate>Tue, 11 Feb 2020 17:54:03 +0100</pubDate>
+      <author>Malte Deiseroth</author>
+      <guid>https://deisi.github.io/posts/daten_statt_nachrichten/</guid>
+      <description>Daten statt blabla</description>
+      
+      <content>
+
+&lt;p&gt;Mich stört immer mehr die Informationsauswahl bei redaktionellen Inhalten.
+Versteht mich jetzt nicht falsch, ich will hier nicht die Mähr von der
+&amp;ldquo;Lügenpresse&amp;rdquo; nähren. Aber es ist leider so, dass Nachrichten kein
+repräsentatives Bild der Realität zeichnen. Stattdessen sind Katastrophen und
+Probleme überrepräsentiert und Erfolge und positives unterrepräsentiert. Das
+liegt wohl in der Natur der Sache, aber es hilft sich das gelegentlich zu
+verdeutlichen.&lt;/p&gt;
+
+&lt;p&gt;Wer sich über gesellschaftlich relevante Daten informieren will, dem empfehle
+ich einen Blick auf &lt;a href=&#34;https://www.gapminder.org/&#34;&gt;gapminder&lt;/a&gt;. Hier kann man neben
+einem netten Test, auch Datensätze finden. Richtig Spaß macht das &lt;a href=&#34;https://www.gapminder.org/tools-offline/&#34;&gt;Offline
+Tool&lt;/a&gt;. Ich habe schon den ein oder
+anderen Abend damit zu gebraucht mir bunte plots zu machen. Darum hier mal eine
+Auswahl von mir.&lt;/p&gt;
+
+&lt;h2 id=&#34;das-durchschnittliche-einkommen&#34;&gt;Das durchschnittliche Einkommen&lt;/h2&gt;
+
+&lt;p&gt;inflationsbereinigt &lt;img src=&#34;https://deisi.github.io/gapminder/income_per_person.svg&#34; alt=&#34;img&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;arbeitslosenrate&#34;&gt;Arbeitslosenrate&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://deisi.github.io/gapminder/unemployment_rate.svg&#34; alt=&#34;img&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;co2-tonnen-pro-person&#34;&gt;CO2 Tonnen pro Person&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://deisi.github.io/gapminder/co2_per_person.svg&#34; alt=&#34;img&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;co2-gesamt&#34;&gt;CO2 Gesamt&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://deisi.github.io/gapminder/co2_per_year.svg&#34; alt=&#34;img&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;lebenserwartung&#34;&gt;Lebenserwartung&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://deisi.github.io/gapminder/life_expectancy.svg&#34; alt=&#34;img&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;verkehrstote&#34;&gt;Verkehrstote&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://deisi.github.io/gapminder/traffic_deaths.svg&#34; alt=&#34;img&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;selbstmorde-pro-10000-männer&#34;&gt;Selbstmorde pro 10000 Männer&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://deisi.github.io/gapminder/suicide_men.svg&#34; alt=&#34;img&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;selbstmorde-pro-10000-frauen&#34;&gt;Selbstmorde pro 10000 Frauen&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://deisi.github.io/gapminder/suicide_women.svg&#34; alt=&#34;img&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;militärausgaben-gemessen-am-brutto-inlands-produkt-gdp&#34;&gt;Militärausgaben gemessen am Brutto Inlands Produkt (GDP)&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://deisi.github.io/gapminder/military_expenditure.svg&#34; alt=&#34;img&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Wenn kurven plötzlich enden, dann liegt es daran, dass Gapminder hier keine
+Daten hat. Perfekt ist die Sache also, nicht, aber kurzer Seitenhieb ans
+statistische Bundesamt in Wiesbaden. Eure &lt;a href=&#34;https://www-genesis.destatis.de/genesis/online&#34;&gt;GENESIS-Online
+Datenbank&lt;/a&gt; macht nicht halb so
+viel Spaß.&lt;/p&gt;
+</content>
+      
+    </item>
+    
+    <item>
+      <title>In House Certificate Authority with Eeasy RSA</title>
+      <link>https://deisi.github.io/posts/easy_rsa/</link>
+      <pubDate>Tue, 04 Feb 2020 12:47:36 +0100</pubDate>
+      <author>Malte Deiseroth</author>
+      <guid>https://deisi.github.io/posts/easy_rsa/</guid>
+      <description>Easy RSA to administrate a local CA</description>
+      
+      <content>
+
+&lt;p&gt;&lt;img src=&#34;https://deisi.github.io/easyrsa/easy_rsa.png&#34; alt=&#34;img&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Over the years I grew a fairly sophisticated network at home. Currently I have a
+x86 server and a raspberry pi running &lt;sup&gt;24&lt;/sup&gt;&amp;frasl;&lt;sub&gt;7&lt;/sub&gt;. On the x86 Server there are many
+services like homeassistant, tvheadend, kodi, mopidy, snapcast and a couple
+more. The raspberry pi is used in my bathroom to play music and measure
+humidity and temperature. Anyway, most of the services in a local network run
+without encryption. Take mopidy e.g. it doesn&amp;rsquo;t even have any documentation on
+how to encrypt its connection and that is not even bad, because why would you
+want to encrypt the control of you music system. Also because mopidy is
+controlled via a web-page, it is relatively &amp;ldquo;easy&amp;rdquo; to add an encryption layer to
+it using a reverse proxy setup.&lt;/p&gt;
+
+&lt;p&gt;So there is the question why would you want encryption throughout your local
+network and honestly the best answer I have, is because I want to. Somehow I
+like encryption. I like it, when the little lock in the top left corner of my
+browser is green even if I just change the music or I look at the temperature
+in the bathroom. It gives me some kind of satisfaction.&lt;/p&gt;
+
+&lt;p&gt;To do this, you could go with self singed certificates all over the place. This
+would probably be the easiest, but if we want easy, we wouldn&amp;rsquo;t talk about
+encryption throughout the local network in the first place, right?. Thus we
+&lt;strong&gt;Need&lt;/strong&gt; a Certificate Authority or also called CA.&lt;/p&gt;
+
+&lt;p&gt;Now you &lt;em&gt;can&lt;/em&gt; use OpenSSl for this, but somehow I could never get used to
+commands like:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;openssl req -new -sha256 -key domain.com.key -out domain.com.csr
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Quite frankly, the command line interface of openssl is outright horrible. I
+guess its very flexible and the guys who made it have done an awesome Job, if
+you consider what it is used for. However it always felt very verbose for my use
+case.&lt;/p&gt;
+
+&lt;p&gt;Thanks to god (or just the developers of OpenVPN). You can use &lt;strong&gt;easy_rsa&lt;/strong&gt; for
+this.&lt;/p&gt;
+
+&lt;h1 id=&#34;what-we-need&#34;&gt;What we need&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;1. CA consists out of a private key and a self singed public key that you have
+to transport somehow on all your devices. It is super important, that you
+protect the private key of your CA as good as possible.&lt;/li&gt;
+&lt;li&gt;2. For all the services you want to encrypt, you need another private key and
+from this private key, you will generate a &lt;em&gt;certificate singing request&lt;/em&gt; often
+just called csr.&lt;/li&gt;
+&lt;li&gt;3. This csr needs to be transported over to your CA and subsequently singed by
+the CA. The singed csr is then called a &lt;em&gt;certificate&lt;/em&gt; or often just crt.&lt;/li&gt;
+&lt;li&gt;4. This certificate must be transported back to the machine you run your
+service on and can then be used to start your encrypted service.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;easyrsa&#34;&gt;EasyRSA&lt;/h1&gt;
+
+&lt;h2 id=&#34;setting-up-a-ca&#34;&gt;Setting up a CA&lt;/h2&gt;
+
+&lt;p&gt;Decide a folder where you want to store your CA. For security reasons I would
+recommend to do it with root under and not as a normal user, but that is
+personal taste.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mkdir -p /etc/easy-rsa/ca
+cd /etc/easy-rsa/ca
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Download the &lt;a href=&#34;https://deisi.github.io/static/easyrsa/openssl-easyrsa.cnf&#34;&gt;openssl-easyrsa.cnf&lt;/a&gt; and put it in the same folder.&lt;/p&gt;
+
+&lt;p&gt;Next step is to initiate a new PKI and create a CA key with a self singed
+certificate. with:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;easyrsa init-pki
+easyrsa build-ca
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;You &lt;strong&gt;must&lt;/strong&gt; give a passwords at this stage. Choose a good password for this as
+it is the last resort of defense for you CA and leaking this could have
+devastating consequences expanding beyond the reach of your local network. What
+you answer to the subsequent Common Name question is not really important. I
+suggest being a little creative as it allows you to easily recognize your CA at
+later times.&lt;/p&gt;
+
+&lt;p&gt;You now have a certificate for your CA at &lt;code&gt;pki/ca.crt&lt;/code&gt;. By the way, from an
+purely technical point of view this is all you need to start your own company
+and sell overpriced ssl certificates to random people. This and a way to copy
+your &lt;code&gt;ca.crt&lt;/code&gt; over to almost every internet connected device there is.&lt;/p&gt;
+
+&lt;h2 id=&#34;private-key-and-certificate-for-your-service&#34;&gt;Private Key and Certificate for your Service&lt;/h2&gt;
+
+&lt;p&gt;This process you must repeat for every service you want to secure. Usually you
+want to do this on the machine hosting your service, but in principle it doesn&amp;rsquo;t
+matter, as long as you have a secure way of transporting the private key through
+the network.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mkdir -p /etc/easy-rsa/someservice
+cd /etc/easy-rsa/someservice
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;again download or copy &lt;a href=&#34;https://deisi.github.io/static/easyrsa/openssl-easyrsa.cnf&#34;&gt;openssl-easyrsa.cnf&lt;/a&gt; into the folder and run&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;easyrsa init-pki
+easyrsa gen-req servername nopass
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This time I suggest nopass, because you want your server to be able to start
+itself without you having to type in a password each time. Also here the &lt;em&gt;Common
+Name&lt;/em&gt; does matter. It should be the exact server name under witch you intend to
+make your service reachable. E.g *service.local.net** or something similar.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt; it is not possible to use top level domain names. E.g. you cant have a
+server reachable under &lt;em&gt;service&lt;/em&gt;. This works for your network, but every browser
+will reject any such certificate and all work is for nothing.&lt;/p&gt;
+
+&lt;h1 id=&#34;quellen&#34;&gt;Quellen&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://wiki.archlinux.org/index.php/Easy-RSA&#34;&gt;https://wiki.archlinux.org/index.php/Easy-RSA&lt;/a&gt;
+&lt;a href=&#34;https://github.com/OpenVPN/easy-rsa&#34;&gt;https://github.com/OpenVPN/easy-rsa&lt;/a&gt;
+&lt;a href=&#34;https://easy-rsa.readthedocs.io/en/latest/&#34;&gt;https://easy-rsa.readthedocs.io/en/latest/&lt;/a&gt;&lt;/p&gt;
+</content>
       
     </item>
     
@@ -31,19 +310,132 @@
       <guid>https://deisi.github.io/about/</guid>
       <description></description>
       
-      <content>&lt;h1 id=&#34;über-mich&#34;&gt;Über Mich&lt;/h1&gt;
+      <content>
+
+&lt;h1 id=&#34;über-mich&#34;&gt;Über Mich&lt;/h1&gt;
+
 &lt;figure&gt;
     &lt;img src=&#34;https://deisi.github.io/potrait.jpg&#34; width=&#34;200px&#34;/&gt; 
 &lt;/figure&gt;
 
+
 &lt;p&gt;Malte Deiseroth
 Ober-Saulheimerstr 7
 55291 Saulheim&lt;/p&gt;
+
 &lt;h1 id=&#34;was-wird-gespeichert&#34;&gt;Was wird gespeichert&lt;/h1&gt;
+
 &lt;p&gt;Um Zugriffszahlen zu erhalten benutze ich GoogleAnalytics(GA). Allerdings werden
 die IP Adressen anonymisiert. Konkret bedeutet das, dass das letzt Byte auf 0
 gesetzt wird. Weiter gibt es keine Cookies, sondern der Session Storage wird
 benutzt um die GA ClientID zu speichern.&lt;/p&gt;
+</content>
+      
+    </item>
+    
+    <item>
+      <title>Zwei Faktor Authentifizierung (2FA) mit SSH</title>
+      <link>https://deisi.github.io/posts/2fa/</link>
+      <pubDate>Tue, 08 Jan 2019 18:47:05 +0100</pubDate>
+      <author>Malte Deiseroth</author>
+      <guid>https://deisi.github.io/posts/2fa/</guid>
+      <description>Zwei Faktor Authentifizierung mit Google Authenticator</description>
+      
+      <content>
+
+&lt;p&gt;Es zeigt sich, das zwei Faktor Authentifizierung (2FA) mit SSH sowohl gut, als
+auch schlecht funktioniert. Die Installation und die initiale Inbetriebnahme ist
+verboten einfach, allerdings steckt der Teufel im Detail.&lt;/p&gt;
+
+&lt;h2 id=&#34;1-google-pam-modul-installieren&#34;&gt;1. Google PAM Modul Installieren&lt;/h2&gt;
+
+&lt;p&gt;PAM steht für &lt;strong&gt;P&lt;/strong&gt;luggable &lt;strong&gt;A&lt;/strong&gt;uthentication &lt;strong&gt;M&lt;/strong&gt;odule und bezeichnet den
+Namen unter dem google seinen Service für 2FA führt. Ein anderer Begriff denn
+man öfter mal ließt ist Time-based One-Time Password (TOTP). Dies bezeichnet das
+sich zeitlich ändernde Passwort, das mittels Google Authenticator zur Verfügung
+gestellt wird.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ sudo apt-get update
+$ sudo apt-get install libpam-google-authenticator
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Unter Arch Linux muss man noch &lt;code&gt;qrencode&lt;/code&gt; installieren, wenn man den QR code
+direkt im Browser angezeigt bekommen will&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt; $ sudo pacman -S qrencode libpam-google-authenticator
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Als nächstes hangelt man sich durch die interaktive Einrichtung.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ google-authenticator
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Die ist sehr selbsterklärend, also verzichte ich auf eine Beschreibung. Ich
+empfehle euch allerdings die ganzen &lt;strong&gt;emergency codes&lt;/strong&gt; die ihr am Ende bekommt
+irgendwo ab zu speichern. Im Falle eines Falles sind sie dann da.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://deisi.github.io/2fa/00.png&#34; alt=&#34;img&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Diesen QR Code könnt ihr dann mit dem &lt;code&gt;Google Authenticator&lt;/code&gt; fotografieren. Und
+zack läuft das Ding schon mal auf eurem Handy.&lt;/p&gt;
+
+&lt;h2 id=&#34;2-aktivieren-des-moduls&#34;&gt;2. Aktivieren des Moduls&lt;/h2&gt;
+
+&lt;p&gt;Als nächstes muss noch das Modul für die SSH verbindung aktiviert werden.
+Hierfür müssen zwei Dateien editiert werden. In der &lt;code&gt;/etc/pam.d/sshd&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-config&#34;&gt;auth required pam_google_authenticator.so
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ans Ende anfügen und als zweites, in der &lt;code&gt;/etc/ssh/sshd_config&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-config&#34;&gt;ChallengeResponseAuthentication yes
+AuthenticationMethods keyboard-interactive
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;eintragen.&lt;/p&gt;
+
+&lt;h2 id=&#34;3-ssh-daemon-neu-starten&#34;&gt;3. SSH Daemon neu starten&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo systemctl restart sshd.service
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Es ist eine gute Idee die aktuell aktive Shell nicht zu schließen, sondern statt
+dessen die Verbindung mit einer neuen Shell zu testen. Hier sollte jetzt erst
+nach dem Passwort und dann nach einem &lt;code&gt;Verification code&lt;/code&gt; gefragt werden. Beim
+&lt;code&gt;Verification code&lt;/code&gt; handelt es sich um den gerade aktiven Google Authenticator
+Key. Beim eingeben des Keys müsst ihr euch übrigens nicht tot hetzen, da immer
+mindestens 3, vielleicht sogar 17 Keys gleichzeitig gültig sind.&lt;/p&gt;
+
+&lt;h2 id=&#34;4-ssh-key-statt-passwort&#34;&gt;4. SSH Key statt Passwort&lt;/h2&gt;
+
+&lt;p&gt;Wenn ihr vorher anstelle von Passwörtern ssh Keys verwendet habt, so wie ich,
+dann dürfte euch aufgefallen sein, dass ihr auf einmal trotzdem Passwörter
+eingeben müsst. Der SSH Key wird einfach ignoriert. Dabei ist es auch egal, dass
+ihr bei &lt;code&gt;PasswordAuthentication no&lt;/code&gt; eingegeben habt. Der SSH Key wird einfach
+ignoriert.&lt;/p&gt;
+
+&lt;p&gt;Bisher habe ich es nicht hinbekommen per default Keys und als Fallback ein
+Passwort zu haben. Stattdessen kann ich euch nur sagen wie man komplett auf das
+Passwort verzichtet.&lt;/p&gt;
+
+&lt;p&gt;Öffnet dazu wieder &lt;code&gt;/etc/pam.d/sshd&lt;/code&gt; und kommentiert die Zeile:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;# Standard Un*x authentication.
+#@include common-auth
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;wie gezeigt aus und startet den SSH Daemon neu.&lt;/p&gt;
+
+&lt;p&gt;Im Internet kursieren verschiedene Lösungen die die &lt;code&gt;AuthenticationMethods&lt;/code&gt;
+ändern, aber alles was ich bisher ausprobiert habe, hatte nicht den gewünschten
+Effekt. Wer eine Lösung kennt, immer her damit.&lt;/p&gt;
+
+&lt;h2 id=&#34;quellen&#34;&gt;Quellen&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://hostadvice.com/how-to/how-to-enable-two-factor-authentication-on-ubuntu-18-04-vps/&#34;&gt;1&lt;/a&gt;
+&lt;a href=&#34;https://www.linode.com/docs/security/authentication/use-one-time-passwords-for-two-factor-authentication-with-ssh-on-ubuntu-16-04-and-debian-8/&#34;&gt;2&lt;/a&gt;
+&lt;a href=&#34;https://blog.webnersolutions.com/ubuntu-google-authenticator-not-working-with-ssh-keys&#34;&gt;3&lt;/a&gt;&lt;/p&gt;
 </content>
       
     </item>

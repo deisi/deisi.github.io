@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on Deisi Blog</title>
@@ -6,10 +6,20 @@
     <description>Recent content in Posts on Deisi Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>de</language>
-    <lastBuildDate>Wed, 19 Feb 2020 08:00:00 +0100</lastBuildDate>
+    <lastBuildDate>Fri, 28 Feb 2020 08:30:00 +0100</lastBuildDate>
     
 	<atom:link href="https://deisi.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Verschlüsselung mittels PLZ bei einer Bank!?!</title>
+      <link>https://deisi.github.io/posts/sichere_banken/</link>
+      <pubDate>Fri, 28 Feb 2020 08:30:00 +0100</pubDate>
+      
+      <guid>https://deisi.github.io/posts/sichere_banken/</guid>
+      <description>Ich habe gerade ein Konto bei einer großen deutschen online Bank eröffnet und ich traue meinen Augen kaum. Ich zitiere mal aus der Mail:
+... im Anhang bekommen Sie wichtige Unterlagen für Ihr Konto - als PDF-Date und verschlüsselt. Bitte geben Sie beim Öffnen des PDFs einfach Ihre Postleitzahl ein. ...  WTF????? Euer Ernst???? Ein Witz oder? Habe ich gedacht, aber nein, echt Wahr. Verschlüsselung quasi mit Passwort in der selben Mail.</description>
+    </item>
     
     <item>
       <title>DSGVO mit Disqus und GoogleAnalytics</title>
@@ -36,7 +46,7 @@ Wer sich über gesellschaftlich relevante Daten informieren will, dem empfehle i
       <pubDate>Tue, 04 Feb 2020 12:47:36 +0100</pubDate>
       
       <guid>https://deisi.github.io/posts/easy_rsa/</guid>
-      <description>Over the years I grew a fairly sophisticated network at home. Currently I have a x86 server and a raspberry pi running 24/7. On the x86 Server there are many services like homeassistant, tvheadend, kodi, mopidy, snapcast and a couple more. The raspberry pi is used in my bathroom to play music and measure humidity and temperature. Anyway, most of the services in a local network run without encryption. Take mopidy e.</description>
+      <description>Over the years I grew a fairly sophisticated network at home. Currently I have a x86 server and a raspberry pi running 24&amp;frasl;7. On the x86 Server there are many services like homeassistant, tvheadend, kodi, mopidy, snapcast and a couple more. The raspberry pi is used in my bathroom to play music and measure humidity and temperature. Anyway, most of the services in a local network run without encryption. Take mopidy e.</description>
     </item>
     
     <item>
