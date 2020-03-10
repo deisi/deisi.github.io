@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"  lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>LUKS mit Yubikey | Deisi Blog</title>
+
+
+
+<link href="https://deisi.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Deisi Blog" />
+
+<link rel="stylesheet" href="/css/style.css"/><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="canonical" href="https://deisi.github.io/posts/luks_mi_yubikey/">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+</head>
+<body>
+<section class="section">
+  <div class="container">
+    <nav id="nav-main" class="nav">
+      <div id="nav-name" class="nav-left">
+        <a id="nav-anchor" class="nav-item" href="https://deisi.github.io">
+          <h1 id="nav-heading" class="title is-4">Deisi Blog</h1>
+        </a>
+      </div>
+      <div class="nav-right">
+        <nav id="nav-items" class="nav-item level is-mobile"><a class="level-item" aria-label="github" href='https://github.com/deisi'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+    
+  </svg></i>
+            </span>
+          </a><a class="level-item" aria-label="email" href='mailto:mdeiseroth88@gmail.com'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+    <polyline points="22,6 12,13 2,6"/>
+    
+  </svg></i>
+            </span>
+          </a><a class="level-item" aria-label="rss" href='/index.xml'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle>
+    
+  </svg></i>
+            </span>
+          </a></nav>
+      </div>
+    </nav>
+
+    <nav class="nav">
+      
+
+      
+      <div class="nav-right"><a class="nav-item" href="https://deisi.github.io/about">
+          <h2 class="title is-5">About/Impressum/Datenschutz</h2>
+        </a></div>
+      
+    </nav>
+
+  </div>
+  <script src="/js/navicon-shift.js"></script>
+</section>
+<section class="section">
+  <div class="container">
+    <div class="subtitle tags is-6 is-pulled-right">
+      
+      
+<a class="subtitle is-6" href="/tags/security">#Security</a>
+
+
+
+  
+  | <a class="subtitle is-6" href="/tags/howto">#HowTo</a>
+  
+  | <a class="subtitle is-6" href="/tags/linux">#Linux</a>
+  
+
+      
+    </div>
+    <h2 class="subtitle is-6">March 10, 2020</h2>
+    <h1 class="title">LUKS mit Yubikey</h1>
+    
+    <div class="content">
+      
+
+<p>Ich habe jetzt vor einiger Zeit zwei Ubuntu und einen Archlinux PC auf eine
+2-Faktor-Vollverschlüsselung umgestellt. Mit dem Ergebnis bin ich bisher sehr
+zufrieden. Darum dokumentiere ich hier die nötigen Schritte. Getestet wurde
+diese Anleitung für Ubuntu 19.10.</p>
+
+<h1 id="begriffe">Begriffe</h1>
+
+<p>Die folgenden Begriffe sollten so ungefähr bekannt sein.
+- <strong><a href="https://wiki.archlinux.org/index.php/Dm-crypt">LUKS</a></strong>: Ein System zur
+  Verschlüsselung von Festplatten unter Linux.
+- <strong><a href="https://wiki.archlinux.org/index.php/Dm-crypt/Device_encryption#Backup_and_restore">LUKS-Header</a></strong>:
+  Die wichtigste Datei einer verschlüsselten Festplatte. Hier werden die
+  gültigen Passwörter zur Entschlüsselung in Keyslots abgelegt. Bis zu 8 können
+  gleichzeitig aktiviert sein. <strong>Achtung</strong> Wird der LUKS-Header beschädigt und
+  besitzt man kein Backup, sind die Daten unwiederbringlich verloren.
+- <a href="https://wiki.archlinux.org/index.php/Mkinitcpio">initramfs</a>: So etwas wie ein
+  kleines Filesystem, dass während des boot Vorgangs gestartet wird. Für die
+  Entschlüsselung während des boot Vorgangs müssen wir hier etwas anpassen.</p>
+
+<h1 id="voraussetzungen">Voraussetzungen</h1>
+
+<p>Als zweiten Faktor verwende ich <a href="https://www.yubico.com/">yubikeys</a> nicht ganz
+billig, aber sie tun was sie sollen. Da ich den <em>challenge-response</em> Modus für
+die Verschlüsselung verwende, muss es einer der teureren <em>Yubikeys</em> (schwarz)
+sein. Die günstigeren <em>Security Keys</em> (blau) unterstützen den
+challenge-response-modus nicht und können nicht verwendet werden. <a href="https://github.com/shimunn/fido2luks">Allerdings
+könnte es in Zukunft möglich sein LUKS mit FIDO2 zu
+verwenden.</a> Dann wären auch die blauen
+Keys okay, aber bisher ist das noch sehr frühes Entwicklungsstadium und Fedora
+only glaube ich. Es empfiehlt sich sogar 2 bis 3 dieser Keys zu kaufen, da man
+so auch einen verlieren kann ohne gleich komplett angeschmiert zu sein.</p>
+
+<h1 id="das-konzept">Das Konzept</h1>
+
+<p><img src="/yubikey/challenge_response.svg" alt="concept" /></p>
+
+<p>Die Idee ist, dass die Festplatte mit einem Passwort verschlüsselt wird, das in
+Wahrheit aus zwei Teilen besteht. Der <em>challenge</em> und der <em>response</em>. Die
+<em>challenge</em> ist der erste Faktor. Sie ist quasi der Teil des Passworts, den ich
+kenne, oder anders gesagt, das Passwort im klassischen Sinne. Der zweite Teil
+ist die <em>response</em>. Die <em>response</em> wird vom Key als Antwort auf die <em>challenge</em>
+erstellt. Das besondere an Yubikeys und anderen Cryptokeys ist, dass es nicht
+möglich ist, das der <em>response</em> zu Grunde liegende Geheimnis aus dem Key zu
+extrahieren. Selbst wenn man den Key besitzt, kommt man nicht mehr an das
+Geheimnis heran. Darum handelt es sich hier fast tatsächlich um einen zweiten
+Faktor, denn man muss den Key tatsächlich besitzen.</p>
+
+<p>Ich sage allerdings fast, da bei der Einrichtung des Yubikeys, das Geheimnis
+doch angezeigt wird. Dies ist meines Wissens nach aber der einzige Moment in dem
+das Möglich ist. Dadurch kann man das Geheimnis natürlich auch abspeichern und
+aus dem Besitz, wird doch wieder Wissen. Um mehr als einen Yubikey mit der
+selben <em>response</em> zu erstellen, ist das leider auch zwingend notwendig, da nur
+so ein zweiter Key mit der selben <em>response</em> erstellt werden kann. Es ist also
+jedem selbst überlassen hier eine Entscheidung zu treffen.</p>
+
+<p>Die <em>response</em> wird als Key in einem Keyslot des LUKS-Headers abgelegt. Somit
+braucht es zwei Faktoren um die Festplatte zu entschlüsseln. Siehe [5] für mehr
+Details.</p>
+
+<h1 id="schritt-1-das-ubuntu-system-verschlüsseln">Schritt 1: Das Ubuntu System verschlüsseln.</h1>
+
+<p>Das ist zum Glück inzwischen verboten einfach. Hier kann man den grafischen
+Ubuntu-Installer verwenden um die Vollverschlüsselung zu aktivieren. <strong>ACHTUNG</strong>
+alle Daten werden hierdurch gelöscht. Bitte also vorher <strong>BACKUP</strong> machen.
+Während der Installation vergibt man erst mal ein einfaches Passwort. Das ändern
+wir dann später.</p>
+
+<h1 id="schritt-2-den-yubikey-vorbereiten">Schritt 2: Den Yubikey vorbereiten.</h1>
+
+<p>Der Yubikey kommt standardmäßig mit deaktiviertem challenge-response-modus. Um
+diesen zu aktivieren braucht man den <a href="https://www.yubico.com/products/services-software/download/yubikey-manager/">Yubikey
+Manager</a>.
+Für Ubuntu gibt es eine
+<a href="https://support.yubico.com/support/solutions/articles/15000010964-enabling-the-yubico-ppa-on-ubuntu">PPA</a>:</p>
+
+<pre><code class="language-bash">sudo add-apt-repository ppa:yubico/stable &amp;&amp; sudo apt-get update
+sudo apt-get install yubikey-manager-qt
+</code></pre>
+
+<p>Unter <code>Applications -&gt; OTP</code> z.b. den zweiten Slot des Yubikey, in den challenge-response-modus versetzen. Am Ende sollte es in Yubikey Manager etwa so aus sehen</p>
+
+<p><img src="/yubikey/yubikey_manager.png" alt="img" /></p>
+
+<h1 id="schritt-3-challenge-response-des-yubikey-im-luks-header-ablegen">Schritt 3: Challenge-Response des Yubikey im LUKS-Header ablegen.</h1>
+
+<p>Hier zu yubikey-luks installieren:</p>
+
+<pre><code class="language-bash">sudo apt install yubikey-luks
+</code></pre>
+
+<p>Und den Schlüssel registrieren:</p>
+
+<pre><code class="language-bash">sudo yubikey-luks-enroll
+</code></pre>
+
+<p>Als nächstes muss das initramfs Modul für den yubikey aktiviert werden. Dazu
+muss man <code>keyscript=/usr/share/yubikey-luks/ykluks-keyscript</code> ans Ende der
+<code>/etc/crypttab</code> Datei anhängen. Also:</p>
+
+<pre><code class="language-bash">sudo nano /etc/crypttab
+
+cryptroot /dev/sda none  luks,keyscript=/usr/share/yubikey-luks/ykluks-keyscript
+</code></pre>
+
+<p>Hier muss <code>/dev/sda</code> durch die eigene Festplatte ersetzt werden falls nötig.
+<code>lsblk</code> hilft hier weiter. Nach einer Änderung and der <code>/etc/crypttab</code> muss das
+initramfs neu gebaut werden, darum:</p>
+
+<pre><code class="language-bash">sudo update-initramfs -u
+</code></pre>
+
+<p>Damit der Suspend/Ruhe Modus geht:</p>
+
+<pre><code class="language-bash">sudo systemctl enable yubikey-luks-suspend.service
+</code></pre>
+
+<p>Jetzt kann neu gestartet werden. Wenn alles gut gegangen ist, wird man beim
+Booten aufgefordert den Yubikey einzustecken und das Passwort ein zu geben. Wenn
+nicht, nicht schlimm, man hat ja noch das Passwort von der Installation.
+Vielleicht hilft ein Blick auf <a href="https://github.com/cornelinux/yubikey-luks">https://github.com/cornelinux/yubikey-luks</a></p>
+
+<h1 id="bonus-schritt-4-das-alte-einfache-passwort-löschen">Bonus Schritt 4: Das alte einfache Passwort löschen.</h1>
+
+<p>Während der Installation benutze ich ein einfaches Passwort um die Festplatte zu
+verschlüsseln, da man es doch ein paar mal eingeben muss. Dieses Passwort sollte
+man entweder deaktivieren, oder durch ein möglichst langes anderes Passwort
+ersetzen. Ich empfehle letzteres. Man schwächt zwar seine 2-Faktor
+Verschlüsselung etwas, aber wenn dieses Passwort sehr lang ist und sicher im
+Passwortmanager verwahrt wird, ist es nicht weiter Tragisch. Darum fügt man erst
+ein drittes neues Passwort hinzu:</p>
+
+<pre><code class="language-bash">sudo cryptsetup luksAddKey /dev/&lt;device&gt; 
+
+Enter any passphrase:
+Enter new passphrase for key slot:
+Verify passphrase:
+</code></pre>
+
+<p>Wobei <code>&lt;device&gt;</code> hier ein Platzhalter für die eigene Festplatte ist. Also z.b.
+<code>sda</code>. Das schwache Passwort aus der Installation kann man jetzt aus dem
+LUKS-Header löschen mit:</p>
+
+<pre><code class="language-bash">sudo cryptsetup luksRemoveKey /dev/&lt;device&gt;
+
+Enter LUKS passphrase to be deleted:
+</code></pre>
+
+<p>und gibt das <strong>zu löschende</strong> Passwort an. Für mehr Optionen lohnt <a href="https://wiki.archlinux.org/index.php/Dm-crypt/Device_encryption#Key_management">hier</a> ein Blick.</p>
+
+<h1 id="bonus-schritt-5-ein-backup-des-luks-header-erstellen">Bonus Schritt 5: Ein Backup des LUKS-Header erstellen.</h1>
+
+<p>Der LUKS-Header ist ein <em>single point of failure</em>. Darum sollte man unbedingt
+ein Backup vom LUKS-Header erstellen. Allerdings erst nachdem die finale Version
+der Keys dort abgelegt worden ist. Ansonsten kann jemand, der über den alten
+LUKS-Header verfügt, diesen benutzen um die Festplatte mit dem schwachen
+Passwort aus der Installation zu entschlüsseln.</p>
+
+<pre><code class="language-bash">sudo cryptsetup luksHeaderBackup /dev/&lt;device&gt; --header-backup-file /mnt/&lt;backup&gt;/&lt;file&gt;.img
+</code></pre>
+
+<p>reicht dafür. Siehe
+<a href="https://wiki.archlinux.org/index.php/Dm-crypt/Device_encryption#Backup_and_restore">hier</a>
+für nähere Informationen. Wo und wie man das Backup am besten speichert ist ein
+Problem für sich. Ich habe es so gemacht, dass ich 3 verschlüsselte Rechner habe
+und auf jedem ist ein Backup sämtlicher LUKS-Header aller drei Systeme.</p>
+
+<h1 id="bonus-schritt-6-automatisches-login-aktivieren">Bonus Schritt 6: Automatisches Login aktivieren.</h1>
+
+<p>Nervig ist, dass man jetzt beim booten nach zwei Passwörtern gefragt wird. Das
+für die Verschlüsselung der Festplatten und dass für den User Login. Da ich eh
+nur einen User habe, und meine Festplatte ja verschlüsselt ist, habe ich den
+User Login deaktiviert. Das geht bei Ubuntu über die GUI unter <em>Settings &gt;
+Details &gt; Users</em> und dann die Checkbox <em>Automatic Login</em>. Im Deutschen heißen
+sie Sachen Wahrscheinlich <em>Systemeinstellungen &gt; Details &gt; Benutzer &gt;
+Automatischer Login</em> oder so ähnlich.</p>
+
+<p>Allerdings reicht das noch nicht ganz, denn jetzt wird man trotzdem noch nach
+dem Passwort für die Keychain gefragt. Standard mäßig ist das gleich dem User
+Passwort. IMO kann man auch auf dieses Passwort verzichten. Dazu muss ein leeres
+Passwort eingegeben werden:</p>
+
+<p><img src="/yubikey/seahorse.png" alt="seahorse" /> Starte oder installiere falls nötig das
+Programm <code>seahorse</code>. Bei Ubuntu taucht es auch als <em>Passwords and Keys</em> auf. Am
+linken Rand mit rechter Maustaste auf Login das Passwort ändern. Dazu erst das
+alte User-Passwort eingeben und dann für das Neue leer lassen.</p>
+
+<p>Viel Freude mit dem Setup!</p>
+
+<p>Deisi</p>
+
+<h1 id="quellen-und-referenzen">Quellen und Referenzen</h1>
+
+<ul>
+<li><a href="https://github.com/cornelinux/yubikey-luks">https://github.com/cornelinux/yubikey-luks</a></li>
+<li><a href="https://wiki.archlinux.org/index.php/Dm-crypt/Device_encryption">https://wiki.archlinux.org/index.php/Dm-crypt/Device_encryption</a></li>
+</ul>
+
+      
+      <div class="related">
+
+<h3>Similar articles:</h3>
+<ul>
+	
+	<li><a href="/posts/easy_rsa/">In House Certificate Authority with Eeasy RSA</a></li>
+	
+	<li><a href="/posts/2fa/">Zwei Faktor Authentifizierung (2FA) mit SSH</a></li>
+	
+	<li><a href="/posts/sichere_banken/">Verschlüsselung mittels PLZ bei einer Bank!?!</a></li>
+	
+	<li><a href="/posts/privacy/">DSGVO mit Disqus und GoogleAnalytics</a></li>
+	
+</ul>
+</div>
+      
+    </div>
+    
+  </div>
+</section>
+
+    <script src="/js/copycode.js"></script>
+
+
+<section class="section">
+  <div class="container">
+    <aside><div id="disqus_thread"></div></aside>
+  
+    <div id="show_comments"><a id="load_comments" class="button is-link">Load comments</a></div>
+  
+    <script type="text/javascript">
+      var disqus_shortname = 'deisiblog';
+      function disqus() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+  
+      
+      var hash = window.location.hash.substr(1);
+      if ((hash.length > 8) && (hash.substring(0, 8) === "comment-")) {
+        disqus();
+        document.getElementById("show_comments").style.display = "none";
+      } else {
+        document.getElementById('load_comments').onclick = function() {
+          disqus();
+          document.getElementById("show_comments").style.display = "none";
+        };
+      }
+  
+
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container has-text-centered">
+    <p><a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</p>
+    
+      <p>Powered by <a href="https://gohugo.io/">Hugo</a> &amp; <a href="https://github.com/ribice/kiss">Kiss</a>.</p>
+    
+  </div>
+</section>
+
+
+<script type="application/javascript">
+var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+var doNotTrack = (dnt == "1" || dnt == "yes");
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	if (window.sessionStorage) {
+		var GA_SESSION_STORAGE_KEY = 'ga:clientId';
+		ga('create', 'UA-132030316-2', {
+	    'storage': 'none',
+	    'clientId': sessionStorage.getItem(GA_SESSION_STORAGE_KEY)
+	   });
+	   ga(function(tracker) {
+	    sessionStorage.setItem(GA_SESSION_STORAGE_KEY, tracker.get('clientId'));
+	   });
+   }
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+</body>
+</html>
+

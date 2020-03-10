@@ -6,10 +6,220 @@
     <generator>Hugo - gohugo.io</generator>
     <language>en</language>
     <contact>mdeiseroth88@gmail.com</contact>
-    <copyright></copyright>
+    <copyright><a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</copyright>
     
         <atom:link href="https://deisi.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>LUKS mit Yubikey</title>
+      <link>https://deisi.github.io/posts/luks_mi_yubikey/</link>
+      <pubDate>Tue, 10 Mar 2020 08:00:00 +0100</pubDate>
+      <author>Malte Deiseroth</author>
+      <guid>https://deisi.github.io/posts/luks_mi_yubikey/</guid>
+      <description>Festplatten verschlüsselung mit Yubikeys unter Ubuntu</description>
+      
+      <content>
+
+&lt;p&gt;Ich habe jetzt vor einiger Zeit zwei Ubuntu und einen Archlinux PC auf eine
+2-Faktor-Vollverschlüsselung umgestellt. Mit dem Ergebnis bin ich bisher sehr
+zufrieden. Darum dokumentiere ich hier die nötigen Schritte. Getestet wurde
+diese Anleitung für Ubuntu 19.10.&lt;/p&gt;
+
+&lt;h1 id=&#34;begriffe&#34;&gt;Begriffe&lt;/h1&gt;
+
+&lt;p&gt;Die folgenden Begriffe sollten so ungefähr bekannt sein.
+- &lt;strong&gt;&lt;a href=&#34;https://wiki.archlinux.org/index.php/Dm-crypt&#34;&gt;LUKS&lt;/a&gt;&lt;/strong&gt;: Ein System zur
+  Verschlüsselung von Festplatten unter Linux.
+- &lt;strong&gt;&lt;a href=&#34;https://wiki.archlinux.org/index.php/Dm-crypt/Device_encryption#Backup_and_restore&#34;&gt;LUKS-Header&lt;/a&gt;&lt;/strong&gt;:
+  Die wichtigste Datei einer verschlüsselten Festplatte. Hier werden die
+  gültigen Passwörter zur Entschlüsselung in Keyslots abgelegt. Bis zu 8 können
+  gleichzeitig aktiviert sein. &lt;strong&gt;Achtung&lt;/strong&gt; Wird der LUKS-Header beschädigt und
+  besitzt man kein Backup, sind die Daten unwiederbringlich verloren.
+- &lt;a href=&#34;https://wiki.archlinux.org/index.php/Mkinitcpio&#34;&gt;initramfs&lt;/a&gt;: So etwas wie ein
+  kleines Filesystem, dass während des boot Vorgangs gestartet wird. Für die
+  Entschlüsselung während des boot Vorgangs müssen wir hier etwas anpassen.&lt;/p&gt;
+
+&lt;h1 id=&#34;voraussetzungen&#34;&gt;Voraussetzungen&lt;/h1&gt;
+
+&lt;p&gt;Als zweiten Faktor verwende ich &lt;a href=&#34;https://www.yubico.com/&#34;&gt;yubikeys&lt;/a&gt; nicht ganz
+billig, aber sie tun was sie sollen. Da ich den &lt;em&gt;challenge-response&lt;/em&gt; Modus für
+die Verschlüsselung verwende, muss es einer der teureren &lt;em&gt;Yubikeys&lt;/em&gt; (schwarz)
+sein. Die günstigeren &lt;em&gt;Security Keys&lt;/em&gt; (blau) unterstützen den
+challenge-response-modus nicht und können nicht verwendet werden. &lt;a href=&#34;https://github.com/shimunn/fido2luks&#34;&gt;Allerdings
+könnte es in Zukunft möglich sein LUKS mit FIDO2 zu
+verwenden.&lt;/a&gt; Dann wären auch die blauen
+Keys okay, aber bisher ist das noch sehr frühes Entwicklungsstadium und Fedora
+only glaube ich. Es empfiehlt sich sogar 2 bis 3 dieser Keys zu kaufen, da man
+so auch einen verlieren kann ohne gleich komplett angeschmiert zu sein.&lt;/p&gt;
+
+&lt;h1 id=&#34;das-konzept&#34;&gt;Das Konzept&lt;/h1&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://deisi.github.io/yubikey/challenge_response.svg&#34; alt=&#34;concept&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Die Idee ist, dass die Festplatte mit einem Passwort verschlüsselt wird, das in
+Wahrheit aus zwei Teilen besteht. Der &lt;em&gt;challenge&lt;/em&gt; und der &lt;em&gt;response&lt;/em&gt;. Die
+&lt;em&gt;challenge&lt;/em&gt; ist der erste Faktor. Sie ist quasi der Teil des Passworts, den ich
+kenne, oder anders gesagt, das Passwort im klassischen Sinne. Der zweite Teil
+ist die &lt;em&gt;response&lt;/em&gt;. Die &lt;em&gt;response&lt;/em&gt; wird vom Key als Antwort auf die &lt;em&gt;challenge&lt;/em&gt;
+erstellt. Das besondere an Yubikeys und anderen Cryptokeys ist, dass es nicht
+möglich ist, das der &lt;em&gt;response&lt;/em&gt; zu Grunde liegende Geheimnis aus dem Key zu
+extrahieren. Selbst wenn man den Key besitzt, kommt man nicht mehr an das
+Geheimnis heran. Darum handelt es sich hier fast tatsächlich um einen zweiten
+Faktor, denn man muss den Key tatsächlich besitzen.&lt;/p&gt;
+
+&lt;p&gt;Ich sage allerdings fast, da bei der Einrichtung des Yubikeys, das Geheimnis
+doch angezeigt wird. Dies ist meines Wissens nach aber der einzige Moment in dem
+das Möglich ist. Dadurch kann man das Geheimnis natürlich auch abspeichern und
+aus dem Besitz, wird doch wieder Wissen. Um mehr als einen Yubikey mit der
+selben &lt;em&gt;response&lt;/em&gt; zu erstellen, ist das leider auch zwingend notwendig, da nur
+so ein zweiter Key mit der selben &lt;em&gt;response&lt;/em&gt; erstellt werden kann. Es ist also
+jedem selbst überlassen hier eine Entscheidung zu treffen.&lt;/p&gt;
+
+&lt;p&gt;Die &lt;em&gt;response&lt;/em&gt; wird als Key in einem Keyslot des LUKS-Headers abgelegt. Somit
+braucht es zwei Faktoren um die Festplatte zu entschlüsseln. Siehe [5] für mehr
+Details.&lt;/p&gt;
+
+&lt;h1 id=&#34;schritt-1-das-ubuntu-system-verschlüsseln&#34;&gt;Schritt 1: Das Ubuntu System verschlüsseln.&lt;/h1&gt;
+
+&lt;p&gt;Das ist zum Glück inzwischen verboten einfach. Hier kann man den grafischen
+Ubuntu-Installer verwenden um die Vollverschlüsselung zu aktivieren. &lt;strong&gt;ACHTUNG&lt;/strong&gt;
+alle Daten werden hierdurch gelöscht. Bitte also vorher &lt;strong&gt;BACKUP&lt;/strong&gt; machen.
+Während der Installation vergibt man erst mal ein einfaches Passwort. Das ändern
+wir dann später.&lt;/p&gt;
+
+&lt;h1 id=&#34;schritt-2-den-yubikey-vorbereiten&#34;&gt;Schritt 2: Den Yubikey vorbereiten.&lt;/h1&gt;
+
+&lt;p&gt;Der Yubikey kommt standardmäßig mit deaktiviertem challenge-response-modus. Um
+diesen zu aktivieren braucht man den &lt;a href=&#34;https://www.yubico.com/products/services-software/download/yubikey-manager/&#34;&gt;Yubikey
+Manager&lt;/a&gt;.
+Für Ubuntu gibt es eine
+&lt;a href=&#34;https://support.yubico.com/support/solutions/articles/15000010964-enabling-the-yubico-ppa-on-ubuntu&#34;&gt;PPA&lt;/a&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;sudo add-apt-repository ppa:yubico/stable &amp;amp;&amp;amp; sudo apt-get update
+sudo apt-get install yubikey-manager-qt
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Unter &lt;code&gt;Applications -&amp;gt; OTP&lt;/code&gt; z.b. den zweiten Slot des Yubikey, in den challenge-response-modus versetzen. Am Ende sollte es in Yubikey Manager etwa so aus sehen&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://deisi.github.io/yubikey/yubikey_manager.png&#34; alt=&#34;img&#34; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&#34;schritt-3-challenge-response-des-yubikey-im-luks-header-ablegen&#34;&gt;Schritt 3: Challenge-Response des Yubikey im LUKS-Header ablegen.&lt;/h1&gt;
+
+&lt;p&gt;Hier zu yubikey-luks installieren:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;sudo apt install yubikey-luks
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Und den Schlüssel registrieren:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;sudo yubikey-luks-enroll
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Als nächstes muss das initramfs Modul für den yubikey aktiviert werden. Dazu
+muss man &lt;code&gt;keyscript=/usr/share/yubikey-luks/ykluks-keyscript&lt;/code&gt; ans Ende der
+&lt;code&gt;/etc/crypttab&lt;/code&gt; Datei anhängen. Also:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;sudo nano /etc/crypttab
+
+cryptroot /dev/sda none  luks,keyscript=/usr/share/yubikey-luks/ykluks-keyscript
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Hier muss &lt;code&gt;/dev/sda&lt;/code&gt; durch die eigene Festplatte ersetzt werden falls nötig.
+&lt;code&gt;lsblk&lt;/code&gt; hilft hier weiter. Nach einer Änderung and der &lt;code&gt;/etc/crypttab&lt;/code&gt; muss das
+initramfs neu gebaut werden, darum:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;sudo update-initramfs -u
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Damit der Suspend/Ruhe Modus geht:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;sudo systemctl enable yubikey-luks-suspend.service
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Jetzt kann neu gestartet werden. Wenn alles gut gegangen ist, wird man beim
+Booten aufgefordert den Yubikey einzustecken und das Passwort ein zu geben. Wenn
+nicht, nicht schlimm, man hat ja noch das Passwort von der Installation.
+Vielleicht hilft ein Blick auf &lt;a href=&#34;https://github.com/cornelinux/yubikey-luks&#34;&gt;https://github.com/cornelinux/yubikey-luks&lt;/a&gt;&lt;/p&gt;
+
+&lt;h1 id=&#34;bonus-schritt-4-das-alte-einfache-passwort-löschen&#34;&gt;Bonus Schritt 4: Das alte einfache Passwort löschen.&lt;/h1&gt;
+
+&lt;p&gt;Während der Installation benutze ich ein einfaches Passwort um die Festplatte zu
+verschlüsseln, da man es doch ein paar mal eingeben muss. Dieses Passwort sollte
+man entweder deaktivieren, oder durch ein möglichst langes anderes Passwort
+ersetzen. Ich empfehle letzteres. Man schwächt zwar seine 2-Faktor
+Verschlüsselung etwas, aber wenn dieses Passwort sehr lang ist und sicher im
+Passwortmanager verwahrt wird, ist es nicht weiter Tragisch. Darum fügt man erst
+ein drittes neues Passwort hinzu:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;sudo cryptsetup luksAddKey /dev/&amp;lt;device&amp;gt; 
+
+Enter any passphrase:
+Enter new passphrase for key slot:
+Verify passphrase:
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Wobei &lt;code&gt;&amp;lt;device&amp;gt;&lt;/code&gt; hier ein Platzhalter für die eigene Festplatte ist. Also z.b.
+&lt;code&gt;sda&lt;/code&gt;. Das schwache Passwort aus der Installation kann man jetzt aus dem
+LUKS-Header löschen mit:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;sudo cryptsetup luksRemoveKey /dev/&amp;lt;device&amp;gt;
+
+Enter LUKS passphrase to be deleted:
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;und gibt das &lt;strong&gt;zu löschende&lt;/strong&gt; Passwort an. Für mehr Optionen lohnt &lt;a href=&#34;https://wiki.archlinux.org/index.php/Dm-crypt/Device_encryption#Key_management&#34;&gt;hier&lt;/a&gt; ein Blick.&lt;/p&gt;
+
+&lt;h1 id=&#34;bonus-schritt-5-ein-backup-des-luks-header-erstellen&#34;&gt;Bonus Schritt 5: Ein Backup des LUKS-Header erstellen.&lt;/h1&gt;
+
+&lt;p&gt;Der LUKS-Header ist ein &lt;em&gt;single point of failure&lt;/em&gt;. Darum sollte man unbedingt
+ein Backup vom LUKS-Header erstellen. Allerdings erst nachdem die finale Version
+der Keys dort abgelegt worden ist. Ansonsten kann jemand, der über den alten
+LUKS-Header verfügt, diesen benutzen um die Festplatte mit dem schwachen
+Passwort aus der Installation zu entschlüsseln.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;sudo cryptsetup luksHeaderBackup /dev/&amp;lt;device&amp;gt; --header-backup-file /mnt/&amp;lt;backup&amp;gt;/&amp;lt;file&amp;gt;.img
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;reicht dafür. Siehe
+&lt;a href=&#34;https://wiki.archlinux.org/index.php/Dm-crypt/Device_encryption#Backup_and_restore&#34;&gt;hier&lt;/a&gt;
+für nähere Informationen. Wo und wie man das Backup am besten speichert ist ein
+Problem für sich. Ich habe es so gemacht, dass ich 3 verschlüsselte Rechner habe
+und auf jedem ist ein Backup sämtlicher LUKS-Header aller drei Systeme.&lt;/p&gt;
+
+&lt;h1 id=&#34;bonus-schritt-6-automatisches-login-aktivieren&#34;&gt;Bonus Schritt 6: Automatisches Login aktivieren.&lt;/h1&gt;
+
+&lt;p&gt;Nervig ist, dass man jetzt beim booten nach zwei Passwörtern gefragt wird. Das
+für die Verschlüsselung der Festplatten und dass für den User Login. Da ich eh
+nur einen User habe, und meine Festplatte ja verschlüsselt ist, habe ich den
+User Login deaktiviert. Das geht bei Ubuntu über die GUI unter &lt;em&gt;Settings &amp;gt;
+Details &amp;gt; Users&lt;/em&gt; und dann die Checkbox &lt;em&gt;Automatic Login&lt;/em&gt;. Im Deutschen heißen
+sie Sachen Wahrscheinlich &lt;em&gt;Systemeinstellungen &amp;gt; Details &amp;gt; Benutzer &amp;gt;
+Automatischer Login&lt;/em&gt; oder so ähnlich.&lt;/p&gt;
+
+&lt;p&gt;Allerdings reicht das noch nicht ganz, denn jetzt wird man trotzdem noch nach
+dem Passwort für die Keychain gefragt. Standard mäßig ist das gleich dem User
+Passwort. IMO kann man auch auf dieses Passwort verzichten. Dazu muss ein leeres
+Passwort eingegeben werden:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://deisi.github.io/yubikey/seahorse.png&#34; alt=&#34;seahorse&#34; /&gt; Starte oder installiere falls nötig das
+Programm &lt;code&gt;seahorse&lt;/code&gt;. Bei Ubuntu taucht es auch als &lt;em&gt;Passwords and Keys&lt;/em&gt; auf. Am
+linken Rand mit rechter Maustaste auf Login das Passwort ändern. Dazu erst das
+alte User-Passwort eingeben und dann für das Neue leer lassen.&lt;/p&gt;
+
+&lt;p&gt;Viel Freude mit dem Setup!&lt;/p&gt;
+
+&lt;p&gt;Deisi&lt;/p&gt;
+
+&lt;h1 id=&#34;quellen-und-referenzen&#34;&gt;Quellen und Referenzen&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/cornelinux/yubikey-luks&#34;&gt;https://github.com/cornelinux/yubikey-luks&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://wiki.archlinux.org/index.php/Dm-crypt/Device_encryption&#34;&gt;https://wiki.archlinux.org/index.php/Dm-crypt/Device_encryption&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+      
+    </item>
     
     <item>
       <title>Verschlüsselung mittels PLZ bei einer Bank!?!</title>
