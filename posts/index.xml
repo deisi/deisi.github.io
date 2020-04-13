@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>de</language>
     <copyright>&lt;a rel=&#34;license&#34; href=&#34;http://creativecommons.org/licenses/by/4.0/&#34;&gt;&lt;img alt=&#34;Creative Commons License&#34; style=&#34;border-width:0&#34; src=&#34;https://i.creativecommons.org/l/by/4.0/88x31.png&#34; /&gt;&lt;/a&gt;&lt;br /&gt;This work is licensed under a &lt;a rel=&#34;license&#34; href=&#34;http://creativecommons.org/licenses/by/4.0/&#34;&gt;Creative Commons Attribution 4.0 International License&lt;/a&gt;.</copyright>
-    <lastBuildDate>Tue, 10 Mar 2020 08:00:00 +0100</lastBuildDate>
+    <lastBuildDate>Mon, 13 Apr 2020 08:00:00 +0100</lastBuildDate>
     
 	<atom:link href="https://deisi.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Papierloses Büro</title>
+      <link>https://deisi.github.io/posts/papierloses_buero/</link>
+      <pubDate>Mon, 13 Apr 2020 08:00:00 +0100</pubDate>
+      
+      <guid>https://deisi.github.io/posts/papierloses_buero/</guid>
+      <description>Papier ist soooo 20. Jahrhundert! Darum will ich so wenig wie möglich auf Papier haben. Ich scanne lieber alles hirnlos ein und speichere es auf meinen Festplatten. Damit ich das ganze später auch halbwegs sinnvoll benutzen kann, müssen die Dokumente aber durchsuchbar sein. Ansonsten hätte man, gegenüber dem einheften, nichts gewonnen. Mittel Optical Character Recognition (OCR) ist das möglich. Hier werden gedruckte Buchstaben erkannt und aus dem Scan wird ein durchsuchbarer Scan.</description>
+    </item>
     
     <item>
       <title>LUKS mit Yubikey</title>

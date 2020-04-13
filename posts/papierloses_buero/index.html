@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"  lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>Papierloses Büro | Deisi Blog</title>
+
+
+
+<link href="https://deisi.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Deisi Blog" />
+
+<link rel="stylesheet" href="/css/style.css"/><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="canonical" href="https://deisi.github.io/posts/papierloses_buero/">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+</head>
+<body>
+<section class="section">
+  <div class="container">
+    <nav id="nav-main" class="nav">
+      <div id="nav-name" class="nav-left">
+        <a id="nav-anchor" class="nav-item" href="https://deisi.github.io">
+          <h1 id="nav-heading" class="title is-4">Deisi Blog</h1>
+        </a>
+      </div>
+      <div class="nav-right">
+        <nav id="nav-items" class="nav-item level is-mobile"><a class="level-item" aria-label="github" href='https://github.com/deisi'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+    
+  </svg></i>
+            </span>
+          </a><a class="level-item" aria-label="email" href='mailto:mdeiseroth88@gmail.com'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+    <polyline points="22,6 12,13 2,6"/>
+    
+  </svg></i>
+            </span>
+          </a><a class="level-item" aria-label="rss" href='/index.xml'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle>
+    
+  </svg></i>
+            </span>
+          </a></nav>
+      </div>
+    </nav>
+
+    <nav class="nav">
+      
+
+      
+      <div class="nav-right"><a class="nav-item" href="https://deisi.github.io/about">
+          <h2 class="title is-5">About/Impressum/Datenschutz</h2>
+        </a></div>
+      
+    </nav>
+
+  </div>
+  <script src="/js/navicon-shift.js"></script>
+</section>
+<section class="section">
+  <div class="container">
+    <div class="subtitle tags is-6 is-pulled-right">
+      
+      
+<a class="subtitle is-6" href="/tags/howto">#HowTo</a>
+
+
+
+  
+  | <a class="subtitle is-6" href="/tags/linux">#Linux</a>
+  
+
+      
+    </div>
+    <h2 class="subtitle is-6">April 13, 2020</h2>
+    <h1 class="title">Papierloses Büro</h1>
+    
+    <div class="content">
+      
+
+<p>Papier ist soooo 20. Jahrhundert! Darum will ich so wenig wie möglich auf Papier
+haben. Ich scanne lieber alles hirnlos ein und speichere es auf meinen
+Festplatten. Damit ich das ganze später auch halbwegs sinnvoll benutzen kann,
+müssen die Dokumente aber durchsuchbar sein. Ansonsten hätte man, gegenüber dem
+einheften, nichts gewonnen. Mittel <strong>O</strong>ptical <strong>C</strong>haracter <strong>R</strong>ecognition
+(OCR) ist das möglich. Hier werden gedruckte Buchstaben erkannt und aus dem Scan
+wird ein durchsuchbarer Scan. Der OpenSource-Branchen-Primus ist wohl
+<a href="https://github.com/tesseract-ocr/tesseract">Tesseract</a>. Tesseract ist aber eher
+ein backend und nicht wirklich einfach zu benutzen. Aus diesem Grund verwende
+ich <a href="https://github.com/jbarlow83/OCRmyPDF">Ocrmypdf</a>. Als Pythonanwendung hat
+Ocrmypdf natürlich gleich einen Bonus in meinem Herzen und auch einen Commit ;).</p>
+
+<p>Am Ende des Tutorials haben wir folgendes Setup:</p>
+
+<p><img src="/ocrmypdf/ocrmypdf.svg" alt="img" /></p>
+
+<h1 id="1-schritt-scanner-einrichten">1. Schritt: Scanner einrichten.</h1>
+
+<p>Hier kann ich nicht wirklich helfen, aber ich habe es so gemacht, dass der
+Scanner auf eine SMB Festplatte im Netzwerk speichert. Mein Scanner erlaubt das.
+Hier muss man gegebenenfalls bei der Hardwareauswahl aufpassen. Ein Papiereinzug
+sollte vorhanden sein, da das scannen so schon nervig genug ist.</p>
+
+<h1 id="2-schritt-ocrmypdf-installieren">2. Schritt: Ocrmypdf installieren.</h1>
+
+<p>Ich benutze den offiziellen
+<a href="https://hub.docker.com/r/jbarlow83/ocrmypdf/">Dockercontainer</a>. Ein Vorteil des
+Dockercontainers ist, dass er bereits mit einem <code>watcher</code> Script ausgestattet
+ist. Dieses Script ermöglicht es einem den Inhalt eines Ordners zu überwachen
+und sobald ein neuer Scan im Ordner erscheint, wird automatisch <em>ocrmypdf</em>
+aktiviert und eine durchsuchbare Version erstellt. Wir brauchen also erst mal
+<em>docker</em> und <em>docker-compose</em>:</p>
+
+<pre><code class="language-bash">sudo apt install docker docker-compose
+</code></pre>
+
+<p>Jetzt fehlt uns noch ocrmypdf. Das können wir mit <em>docker-compose</em>
+installieren und zwar:</p>
+
+<pre><code class="language-bash">mkdir ocrmypdf
+cd ocrmypdf
+touch docker-compose.yml
+</code></pre>
+
+<p>Die <em>docker-compose.yml</em> wird mit folgendem Inhalt gefüllt:</p>
+
+<pre><code class="language-yaml">version: &quot;3.3&quot;
+services:
+  ocrmypdf:
+    restart: always
+    container_name: ocrmypdf
+    user: 1000:1000
+    image: jbarlow83/ocrmypdf
+    volumes:
+      - &quot;PFAD_ZUM_INPUT_FOLODER:/input&quot;
+      - &quot;PFAD_ZUM_OUTPUT_FOLDER:/output&quot;
+    environment:
+      - OCR_OUTPUT_DIRECTORY_YEAR_MONTH=1
+      - OCR_ON_SUCCESS_DELETE=1 
+      - OCR_DESKEW=1
+      - PYTHONUNBUFFERED=1
+    entrypoint: python3
+    command: watcher.py
+</code></pre>
+
+<p><strong>Wichtig</strong> die Datei muss <em>docker-compose.yml</em> heißen. Etwas mehr Dokumentation
+findet man bei
+<a href="https://ocrmypdf.readthedocs.io/en/latest/batch.html#hot-watched-folders">ocrmypdf</a>
+selbst. Natürlich muss <code>PFAD_ZUM_INPUT_FOLODER</code> und <code>PFAD_ZUM_OUTPUT_FOLDER</code> den
+eigenen Bedürfnissen angepasst werden. <code>OCR_OUTPUT_DIRECTORY_YEAR_MONTH=1</code> sorgt
+dafür, dass jahres- und monatsweise Ordner erstellt werden.
+<code>OCR_ON_SUCCESS_DELETE=1</code> löscht den original Scan nach erfolgreichem OCR,
+<code>OCR_DESKEW=1</code> korrigiert leichte Schieflagen von Dokumenten,
+<code>PYTHONUNBUFFERED=1</code> sorgt dafür, dass der Dockerlog auch alle Informationen
+enthält und <code>user: 1000:1000</code> bewirkt, dass alle Datein vom Standarduser
+erstellt werden und nicht wie sonst root. <code>restart=always</code> bedeutet, dass der
+Container immer ausgeführt wird. Auch automatisch nach einem Neustart.</p>
+
+<p>Das Ganze wird aktiviert mit:</p>
+
+<pre><code class="language-bash">sudo docker-compose up -d
+</code></pre>
+
+<p>das <code>-d</code> steht hierbei für <em>detached</em>. D.h. alles läuft im Hintergrund ab. Will
+man aber erst mal sehen ob es überhaupt funktioniert, kann man das <code>-d</code>
+weglassen und bekommt so den Log im Terminal angezeigt. Mit <code>Ctl + c</code> kann das
+ganze dann beendet werden.</p>
+
+<p>Viel Freude mit dem Setup!</p>
+
+<p>Deisi</p>
+
+      
+      <div class="related">
+
+<h3>Similar articles:</h3>
+<ul>
+	
+	<li><a href="/posts/luks_mi_yubikey/">LUKS mit Yubikey</a></li>
+	
+	<li><a href="/posts/privacy/">DSGVO mit Disqus und GoogleAnalytics</a></li>
+	
+	<li><a href="/posts/easy_rsa/">In House Certificate Authority with Eeasy RSA</a></li>
+	
+	<li><a href="/posts/2fa/">Zwei Faktor Authentifizierung (2FA) mit SSH</a></li>
+	
+</ul>
+</div>
+      
+    </div>
+    
+  </div>
+</section>
+
+    <script src="/js/copycode.js"></script>
+
+
+<section class="section">
+  <div class="container">
+    <aside><div id="disqus_thread"></div></aside>
+  
+    <div id="show_comments"><a id="load_comments" class="button is-link">Load comments</a></div>
+  
+    <script type="text/javascript">
+      var disqus_shortname = 'deisiblog';
+      function disqus() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+  
+      
+      var hash = window.location.hash.substr(1);
+      if ((hash.length > 8) && (hash.substring(0, 8) === "comment-")) {
+        disqus();
+        document.getElementById("show_comments").style.display = "none";
+      } else {
+        document.getElementById('load_comments').onclick = function() {
+          disqus();
+          document.getElementById("show_comments").style.display = "none";
+        };
+      }
+  
+
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container has-text-centered">
+    <p><a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</p>
+    
+      <p>Powered by <a href="https://gohugo.io/">Hugo</a> &amp; <a href="https://github.com/ribice/kiss">Kiss</a>.</p>
+    
+  </div>
+</section>
+
+
+<script type="application/javascript">
+var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+var doNotTrack = (dnt == "1" || dnt == "yes");
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	if (window.sessionStorage) {
+		var GA_SESSION_STORAGE_KEY = 'ga:clientId';
+		ga('create', 'UA-132030316-2', {
+	    'storage': 'none',
+	    'clientId': sessionStorage.getItem(GA_SESSION_STORAGE_KEY)
+	   });
+	   ga(function(tracker) {
+	    sessionStorage.setItem(GA_SESSION_STORAGE_KEY, tracker.get('clientId'));
+	   });
+   }
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+</body>
+</html>
+

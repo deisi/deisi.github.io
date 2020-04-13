@@ -12,6 +12,111 @@
     
     
     <item>
+      <title>Papierloses Büro</title>
+      <link>https://deisi.github.io/posts/papierloses_buero/</link>
+      <pubDate>Mon, 13 Apr 2020 08:00:00 +0100</pubDate>
+      <author>Malte Deiseroth</author>
+      <guid>https://deisi.github.io/posts/papierloses_buero/</guid>
+      <description></description>
+      
+      <content>
+
+&lt;p&gt;Papier ist soooo 20. Jahrhundert! Darum will ich so wenig wie möglich auf Papier
+haben. Ich scanne lieber alles hirnlos ein und speichere es auf meinen
+Festplatten. Damit ich das ganze später auch halbwegs sinnvoll benutzen kann,
+müssen die Dokumente aber durchsuchbar sein. Ansonsten hätte man, gegenüber dem
+einheften, nichts gewonnen. Mittel &lt;strong&gt;O&lt;/strong&gt;ptical &lt;strong&gt;C&lt;/strong&gt;haracter &lt;strong&gt;R&lt;/strong&gt;ecognition
+(OCR) ist das möglich. Hier werden gedruckte Buchstaben erkannt und aus dem Scan
+wird ein durchsuchbarer Scan. Der OpenSource-Branchen-Primus ist wohl
+&lt;a href=&#34;https://github.com/tesseract-ocr/tesseract&#34;&gt;Tesseract&lt;/a&gt;. Tesseract ist aber eher
+ein backend und nicht wirklich einfach zu benutzen. Aus diesem Grund verwende
+ich &lt;a href=&#34;https://github.com/jbarlow83/OCRmyPDF&#34;&gt;Ocrmypdf&lt;/a&gt;. Als Pythonanwendung hat
+Ocrmypdf natürlich gleich einen Bonus in meinem Herzen und auch einen Commit ;).&lt;/p&gt;
+
+&lt;p&gt;Am Ende des Tutorials haben wir folgendes Setup:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://deisi.github.io/ocrmypdf/ocrmypdf.svg&#34; alt=&#34;img&#34; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&#34;1-schritt-scanner-einrichten&#34;&gt;1. Schritt: Scanner einrichten.&lt;/h1&gt;
+
+&lt;p&gt;Hier kann ich nicht wirklich helfen, aber ich habe es so gemacht, dass der
+Scanner auf eine SMB Festplatte im Netzwerk speichert. Mein Scanner erlaubt das.
+Hier muss man gegebenenfalls bei der Hardwareauswahl aufpassen. Ein Papiereinzug
+sollte vorhanden sein, da das scannen so schon nervig genug ist.&lt;/p&gt;
+
+&lt;h1 id=&#34;2-schritt-ocrmypdf-installieren&#34;&gt;2. Schritt: Ocrmypdf installieren.&lt;/h1&gt;
+
+&lt;p&gt;Ich benutze den offiziellen
+&lt;a href=&#34;https://hub.docker.com/r/jbarlow83/ocrmypdf/&#34;&gt;Dockercontainer&lt;/a&gt;. Ein Vorteil des
+Dockercontainers ist, dass er bereits mit einem &lt;code&gt;watcher&lt;/code&gt; Script ausgestattet
+ist. Dieses Script ermöglicht es einem den Inhalt eines Ordners zu überwachen
+und sobald ein neuer Scan im Ordner erscheint, wird automatisch &lt;em&gt;ocrmypdf&lt;/em&gt;
+aktiviert und eine durchsuchbare Version erstellt. Wir brauchen also erst mal
+&lt;em&gt;docker&lt;/em&gt; und &lt;em&gt;docker-compose&lt;/em&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;sudo apt install docker docker-compose
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Jetzt fehlt uns noch ocrmypdf. Das können wir mit &lt;em&gt;docker-compose&lt;/em&gt;
+installieren und zwar:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;mkdir ocrmypdf
+cd ocrmypdf
+touch docker-compose.yml
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Die &lt;em&gt;docker-compose.yml&lt;/em&gt; wird mit folgendem Inhalt gefüllt:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;version: &amp;quot;3.3&amp;quot;
+services:
+  ocrmypdf:
+    restart: always
+    container_name: ocrmypdf
+    user: 1000:1000
+    image: jbarlow83/ocrmypdf
+    volumes:
+      - &amp;quot;PFAD_ZUM_INPUT_FOLODER:/input&amp;quot;
+      - &amp;quot;PFAD_ZUM_OUTPUT_FOLDER:/output&amp;quot;
+    environment:
+      - OCR_OUTPUT_DIRECTORY_YEAR_MONTH=1
+      - OCR_ON_SUCCESS_DELETE=1 
+      - OCR_DESKEW=1
+      - PYTHONUNBUFFERED=1
+    entrypoint: python3
+    command: watcher.py
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;Wichtig&lt;/strong&gt; die Datei muss &lt;em&gt;docker-compose.yml&lt;/em&gt; heißen. Etwas mehr Dokumentation
+findet man bei
+&lt;a href=&#34;https://ocrmypdf.readthedocs.io/en/latest/batch.html#hot-watched-folders&#34;&gt;ocrmypdf&lt;/a&gt;
+selbst. Natürlich muss &lt;code&gt;PFAD_ZUM_INPUT_FOLODER&lt;/code&gt; und &lt;code&gt;PFAD_ZUM_OUTPUT_FOLDER&lt;/code&gt; den
+eigenen Bedürfnissen angepasst werden. &lt;code&gt;OCR_OUTPUT_DIRECTORY_YEAR_MONTH=1&lt;/code&gt; sorgt
+dafür, dass jahres- und monatsweise Ordner erstellt werden.
+&lt;code&gt;OCR_ON_SUCCESS_DELETE=1&lt;/code&gt; löscht den original Scan nach erfolgreichem OCR,
+&lt;code&gt;OCR_DESKEW=1&lt;/code&gt; korrigiert leichte Schieflagen von Dokumenten,
+&lt;code&gt;PYTHONUNBUFFERED=1&lt;/code&gt; sorgt dafür, dass der Dockerlog auch alle Informationen
+enthält und &lt;code&gt;user: 1000:1000&lt;/code&gt; bewirkt, dass alle Datein vom Standarduser
+erstellt werden und nicht wie sonst root. &lt;code&gt;restart=always&lt;/code&gt; bedeutet, dass der
+Container immer ausgeführt wird. Auch automatisch nach einem Neustart.&lt;/p&gt;
+
+&lt;p&gt;Das Ganze wird aktiviert mit:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;sudo docker-compose up -d
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;das &lt;code&gt;-d&lt;/code&gt; steht hierbei für &lt;em&gt;detached&lt;/em&gt;. D.h. alles läuft im Hintergrund ab. Will
+man aber erst mal sehen ob es überhaupt funktioniert, kann man das &lt;code&gt;-d&lt;/code&gt;
+weglassen und bekommt so den Log im Terminal angezeigt. Mit &lt;code&gt;Ctl + c&lt;/code&gt; kann das
+ganze dann beendet werden.&lt;/p&gt;
+
+&lt;p&gt;Viel Freude mit dem Setup!&lt;/p&gt;
+
+&lt;p&gt;Deisi&lt;/p&gt;
+</content>
+      
+    </item>
+    
+    <item>
       <title>LUKS mit Yubikey</title>
       <link>https://deisi.github.io/posts/luks_mi_yubikey/</link>
       <pubDate>Tue, 10 Mar 2020 08:00:00 +0100</pubDate>
