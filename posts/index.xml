@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on Deisi Blog</title>
@@ -7,10 +7,17 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>de</language>
     <copyright>&lt;a rel=&#34;license&#34; href=&#34;http://creativecommons.org/licenses/by/4.0/&#34;&gt;&lt;img alt=&#34;Creative Commons License&#34; style=&#34;border-width:0&#34; src=&#34;https://i.creativecommons.org/l/by/4.0/88x31.png&#34; /&gt;&lt;/a&gt;&lt;br /&gt;This work is licensed under a &lt;a rel=&#34;license&#34; href=&#34;http://creativecommons.org/licenses/by/4.0/&#34;&gt;Creative Commons Attribution 4.0 International License&lt;/a&gt;.</copyright>
-    <lastBuildDate>Mon, 13 Apr 2020 08:00:00 +0100</lastBuildDate>
-    
-	<atom:link href="https://deisi.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
-    
+    <lastBuildDate>Mon, 08 Mar 2021 08:00:00 +0100</lastBuildDate><atom:link href="https://deisi.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Testkernel kompilieren</title>
+      <link>https://deisi.github.io/posts/kernel/</link>
+      <pubDate>Mon, 08 Mar 2021 08:00:00 +0100</pubDate>
+      
+      <guid>https://deisi.github.io/posts/kernel/</guid>
+      <description>Ich habe vor einiger Zeit angefangen gelegentlich meinen eigenen Linuxkernel zu kompilieren. So kann ich der Kernelentwicklung folgen und nach Regressionen ausschau halten. Den Kernel selbst zu kompilieren und zu testen ist quasi die einfachste Art und Weise einen bescheidenen Beitrag zur Linuxkernelentwicklung zu leisten. Vorausgesetzt man berichtet wenn man plötzlich Probleme haben sollte.
+Ich habe extra ein Subordner für den Kernel erstellt. Warum wird am Ende klar:
+mkdir kernel cd kernel Danach kann man Linus Kernelbranch herunterladen mit:</description>
+    </item>
     
     <item>
       <title>Papierloses Büro</title>
@@ -27,8 +34,9 @@
       <pubDate>Tue, 10 Mar 2020 08:00:00 +0100</pubDate>
       
       <guid>https://deisi.github.io/posts/luks_mi_yubikey/</guid>
-      <description>Ich habe jetzt vor einiger Zeit zwei Ubuntu und einen Archlinux PC auf eine 2-Faktor-Vollverschlüsselung umgestellt. Mit dem Ergebnis bin ich bisher sehr zufrieden. Darum dokumentiere ich hier die nötigen Schritte. Getestet wurde diese Anleitung für Ubuntu 19.10.
-Begriffe Die folgenden Begriffe sollten so ungefähr bekannt sein. - LUKS: Ein System zur Verschlüsselung von Festplatten unter Linux. - LUKS-Header: Die wichtigste Datei einer verschlüsselten Festplatte. Hier werden die gültigen Passwörter zur Entschlüsselung in Keyslots abgelegt.</description>
+      <description>Ich habe jetzt vor einiger Zeit zwei Ubuntu und einen Archlinux PC auf eine 2-Faktor-Vollverschlüsselung umgestellt. Mit dem Ergebnis bin ich bisher sehr zufrieden. Darum dokumentiere ich hier die nötigen Schritte. Getestet wurde diese Anleitung für Ubuntu 19.10 und 20.04
+Begriffe Die folgenden Begriffe sollten so ungefähr bekannt sein.
+ LUKS: Ein System zur Verschlüsselung von Festplatten unter Linux. LUKS-Header: Die wichtigste Datei einer verschlüsselten Festplatte. Hier werden die gültigen Passwörter zur Entschlüsselung in Keyslots abgelegt.</description>
     </item>
     
     <item>
@@ -38,7 +46,7 @@ Begriffe Die folgenden Begriffe sollten so ungefähr bekannt sein. - LUKS: Ein S
       
       <guid>https://deisi.github.io/posts/sichere_banken/</guid>
       <description>Ich habe gerade ein Konto bei einer großen deutschen online Bank eröffnet und ich traue meinen Augen kaum. Ich zitiere mal aus der Mail:
-... im Anhang bekommen Sie wichtige Unterlagen für Ihr Konto - als PDF-Date und verschlüsselt. Bitte geben Sie beim Öffnen des PDFs einfach Ihre Postleitzahl ein. ...  WTF????? Euer Ernst???? Ein Witz oder? Habe ich gedacht, aber nein, echt Wahr. Verschlüsselung quasi mit Passwort in der selben Mail.</description>
+... im Anhang bekommen Sie wichtige Unterlagen für Ihr Konto - als PDF-Date und verschlüsselt. Bitte geben Sie beim Öffnen des PDFs einfach Ihre Postleitzahl ein. ... WTF????? Euer Ernst???? Ein Witz oder? Habe ich gedacht, aber nein, echt Wahr. Verschlüsselung quasi mit Passwort in der selben Mail.</description>
     </item>
     
     <item>
@@ -66,7 +74,7 @@ Wer sich über gesellschaftlich relevante Daten informieren will, dem empfehle i
       <pubDate>Tue, 04 Feb 2020 12:47:36 +0100</pubDate>
       
       <guid>https://deisi.github.io/posts/easy_rsa/</guid>
-      <description>Over the years I grew a fairly sophisticated network at home. Currently I have a x86 server and a raspberry pi running 24&amp;frasl;7. On the x86 Server there are many services like homeassistant, tvheadend, kodi, mopidy, snapcast and a couple more. The raspberry pi is used in my bathroom to play music and measure humidity and temperature. Anyway, most of the services in a local network run without encryption. Take mopidy e.</description>
+      <description>Over the years I grew a fairly sophisticated network at home. Currently I have a x86 server and a raspberry pi running 24/7. On the x86 Server there are many services like homeassistant, tvheadend, kodi, mopidy, snapcast and a couple more. The raspberry pi is used in my bathroom to play music and measure humidity and temperature. Anyway, most of the services in a local network run without encryption. Take mopidy e.</description>
     </item>
     
     <item>

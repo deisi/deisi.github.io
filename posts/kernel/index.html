@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-<title>About/Impressum/Datenschutz | Deisi Blog</title>
+<title>Testkernel kompilieren | Deisi Blog</title>
 
 
 
@@ -15,7 +15,7 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="manifest" href="/site.webmanifest">
 <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
-<link rel="canonical" href="https://deisi.github.io/about/">
+<link rel="canonical" href="https://deisi.github.io/posts/kernel/">
 <meta name="msapplication-TileColor" content="#da532c">
 <meta name="theme-color" content="#ffffff">
 </head>
@@ -78,33 +78,101 @@
   <div class="container">
     <div class="subtitle tags is-6 is-pulled-right">
       
+      
+<a class="subtitle is-6" href="/tags/howto">#HowTo</a>
+
+
+
+  
+  | <a class="subtitle is-6" href="/tags/kernel">#Kernel</a>
+  
+
+      
     </div>
-    <h2 class="subtitle is-6">January 9, 2019</h2>
-    <h1 class="title">About/Impressum/Datenschutz</h1>
+    <h2 class="subtitle is-6">March 8, 2021</h2>
+    <h1 class="title">Testkernel kompilieren</h1>
     
     <div class="content">
-      <h1 id="über-mich">Über Mich</h1>
-<figure>
-    <img src="/potrait.jpg" width="200px"/> 
-</figure>
-
-<p>Malte Deiseroth
-Ober-Saulheimerstr 7
-55291 Saulheim</p>
-<h1 id="was-wird-gespeichert">Was wird gespeichert</h1>
-<p>Um Zugriffszahlen zu erhalten benutze ich GoogleAnalytics(GA). Allerdings werden
-die IP Adressen anonymisiert. Konkret bedeutet das, dass das letzt Byte auf 0
-gesetzt wird. Weiter gibt es keine Cookies, sondern der Session Storage wird
-benutzt um die GA ClientID zu speichern.</p>
+      <p>Ich habe vor einiger Zeit angefangen gelegentlich meinen eigenen Linuxkernel zu
+kompilieren. So kann ich der Kernelentwicklung folgen und nach Regressionen
+ausschau halten. Den Kernel selbst zu kompilieren und zu testen ist quasi die
+einfachste Art und Weise einen bescheidenen Beitrag zur Linuxkernelentwicklung
+zu leisten. Vorausgesetzt man berichtet wenn man plötzlich Probleme haben
+sollte.</p>
+<p>Ich habe extra ein Subordner für den Kernel erstellt. Warum wird am Ende klar:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">mkdir kernel
+cd kernel
+</code></pre></div><p>Danach kann man Linus Kernelbranch herunterladen mit:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git clone git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+cd linux
+</code></pre></div><p>Unter Ubuntu braucht es die folgenden Abhängigkeiten.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo apt-get install git build-essential kernel-package fakeroot libncurses5-dev libssl-dev ccache bison flex
+</code></pre></div><p>Um einen Kernel zu bauen braucht man eine config Datei. Die aktuell verwendete
+ist grundsätzlich keine schlechte Idee.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">cp /boot/config-<span style="color:#66d9ef">$(</span>uname -r<span style="color:#66d9ef">)</span> .config
+</code></pre></div><p>Jede Kernelversion bringt Änderungen zur Konfiguration mit sich. Mit
+<code>olddefconfig</code> kann man die neuen Sachen auf default setzen. Das sollte sicher
+sein.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">make olddefconfig
+</code></pre></div><p>Für den kernel geht das gute alte (Linus will es so) <code>make</code> und <code>make install</code>.
+Ich persönlich versuche aber möglichst wenig an meinem Paktemanager vorbei zu
+installieren. Auf lange Sicht macht das nur Stress. Zum Glück ist es beim Kernel
+super einfach ein <code>.deb</code> Paket zu bauen:</p>
+<pre><code>make -j 10 bindeb-pkg
+</code></pre><p><code>-j 10</code> bedeutet, dass ich mit 10 threads Kompiliere, was für meinen 8 Kern
+Prozessor okay ist. Je nachdem was du hast, nimm mehr oder weniger <code>Anzahl der Kerne + 2</code> geht meistens gut.</p>
+<p><code>bindeb-pkg</code> sorgt dafür, dass wir installierbare <code>.deb</code> Pakete bekommen. Es gibt
+auch die Option <code>deb-pkg</code> aber bei allen von mir getesteten Systemen ist
+<code>deb-pkg</code> kaputt. <code>bindeb-pkg</code> hat hingegen immer funktioniert. Das
+Ergebnis von obigem <code>make</code> sind dann 4 <code>.deb</code> Dateien. Allerdings landen diese
+Dateien eine Ordner ebene höher. Darum auch der Initiale <code>kernel</code> Ordner im
+ersten Befehl. <code>ls ..</code> zeigt jetzt also u.a.:</p>
+<pre><code>linux-headers-X_X-Y_amd64.deb
+linux-image-X_X-Y_amd64.deb
+linux-image-X-dbg_X-Y_amd64.deb
+linux-libc-dev-X-Y_amd64.deb
+</code></pre><p>X und Y sind hierbei spezifische versionsnummern. X ergibt sich aus der
+Kernelversionsnummer und Y ist eine Buildnummer.</p>
+<p>Das Ergebnis kann jetzt installiert und verwendet werden:</p>
+<pre><code>sudo dpkg -i linux-headers-X_X-Y_amd64.deb linux-image-X_X-Y_amd64.deb
+</code></pre><p>Die <code>libc-dev</code> und <code>dbg</code> Pakete sind dabei optional und brauchen nur installiert
+werden, wenn es Probleme gibt. Sie dienen zum debuggen, was, wenn alles geht, ja
+nicht gebraucht wird.</p>
+<p>Danach kann das System bereits neu installiert werden. Dadurch, dass wir die
+<code>.deb</code> Pakete installieren, werden auch alle dkms module aktualisiert und grub
+wird über die neue Version informiert. Das simple <code>make install</code> kümmert sich
+zwar auch um grub, aber <code>dkms</code> module sind danach oft kaputt.</p>
+<p>Will man den neuen Kernel wieder los werden, kann man ihn mit apt wieder deinstallieren.</p>
+<pre><code>sudo apt remove linux-headers-X  linux-image-X
+</code></pre><p>Hier natürlich aufpassen, dass man die richtige Version deinstalliert, da man ja
+jetzt mindestens zwei Kernel im System hat. Ich würde keinem empfehlen den
+Default Kernel zu deinstallieren.</p>
 
       
       <div class="related">
+
+<h3>Similar articles:</h3>
+<ul>
+	
+	<li><a href="/posts/papierloses_buero/">Papierloses Büro</a></li>
+	
+	<li><a href="/posts/luks_mi_yubikey/">LUKS mit Yubikey</a></li>
+	
+	<li><a href="/posts/privacy/">DSGVO mit Disqus und GoogleAnalytics</a></li>
+	
+	<li><a href="/posts/easy_rsa/">In House Certificate Authority with Eeasy RSA</a></li>
+	
+	<li><a href="/posts/2fa/">Zwei Faktor Authentifizierung (2FA) mit SSH</a></li>
+	
+</ul>
 </div>
       
     </div>
     
   </div>
 </section>
+
+    <script src="/js/copycode.js"></script>
 
 
 <section class="section">

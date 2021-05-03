@@ -89,9 +89,7 @@
     <h1 class="title">DSGVO mit Disqus und GoogleAnalytics</h1>
     
     <div class="content">
-      
-
-<p>Ich habe schon gerne etwas Statistik über den Blog. Man kann jetzt drüber
+      <p>Ich habe schon gerne etwas Statistik über den Blog. Man kann jetzt drüber
 streiten ob man unbedingt GoogleAnalytics (GA) braucht, aber wenigstens die
 Zugriffszahlen interessieren mich dann schon. Auch finde ich, dass eine
 Kommentarfunktion dazu gehört. Da ich den Blog nicht selbst hoste, sondern auf
@@ -99,22 +97,17 @@ github. Kann ich aber nicht einfach das über den Apache log o.ä. machen. Darum
 werde ich erst mal sowohl GA, als auch Disqus einbinden bis ich was besseres
 finde. Allerdings mit den DSGVO privacy Einstellungen von hugo. Das Bedeutet,
 ich benutze folgende <code>config.toml</code> für den Blog.</p>
-
-<pre><code class="language-toml">[privacy]
-  [privacy.disqus]
-    disable = false
-  [privacy.googleAnalytics]
-    anonymizeIP = true
-    disable = false
-    respectDoNotTrack = true
-    useSessionStorage = tru
-</code></pre>
-
-<p>EDIT: Inzwischen habe ich <a href="https://staticman.net/docs/">https://staticman.net/docs/</a> gefunden. Ich denke das
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml">[<span style="color:#a6e22e">privacy</span>]
+  [<span style="color:#a6e22e">privacy</span>.<span style="color:#a6e22e">disqus</span>]
+    <span style="color:#a6e22e">disable</span> = <span style="color:#66d9ef">false</span>
+  [<span style="color:#a6e22e">privacy</span>.<span style="color:#a6e22e">googleAnalytics</span>]
+    <span style="color:#a6e22e">anonymizeIP</span> = <span style="color:#66d9ef">true</span>
+    <span style="color:#a6e22e">disable</span> = <span style="color:#66d9ef">false</span>
+    <span style="color:#a6e22e">respectDoNotTrack</span> = <span style="color:#66d9ef">true</span>
+    <span style="color:#a6e22e">useSessionStorage</span> = <span style="color:#a6e22e">tru</span>
+</code></pre></div><p>EDIT: Inzwischen habe ich <a href="https://staticman.net/docs/">https://staticman.net/docs/</a> gefunden. Ich denke das
 werde ich bald mal umsetzen.</p>
-
 <h2 id="quellen">Quellen</h2>
-
 <p><a href="https://gohugo.io/about/hugo-and-gdpr/">https://gohugo.io/about/hugo-and-gdpr/</a></p>
 
       

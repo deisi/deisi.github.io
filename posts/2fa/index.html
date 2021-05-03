@@ -93,98 +93,61 @@
     <h1 class="title">Zwei Faktor Authentifizierung (2FA) mit SSH</h1>
     
     <div class="content">
-      
-
-<p>Es zeigt sich, das zwei Faktor Authentifizierung (2FA) mit SSH sowohl gut, als
+      <p>Es zeigt sich, das zwei Faktor Authentifizierung (2FA) mit SSH sowohl gut, als
 auch schlecht funktioniert. Die Installation und die initiale Inbetriebnahme ist
 verboten einfach, allerdings steckt der Teufel im Detail.</p>
-
 <h2 id="1-google-pam-modul-installieren">1. Google PAM Modul Installieren</h2>
-
 <p>PAM steht für <strong>P</strong>luggable <strong>A</strong>uthentication <strong>M</strong>odule und bezeichnet den
 Namen unter dem google seinen Service für 2FA führt. Ein anderer Begriff denn
 man öfter mal ließt ist Time-based One-Time Password (TOTP). Dies bezeichnet das
 sich zeitlich ändernde Passwort, das mittels Google Authenticator zur Verfügung
 gestellt wird.</p>
-
-<pre><code class="language-bash">$ sudo apt-get update
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo apt-get update
 $ sudo apt-get install libpam-google-authenticator
-</code></pre>
-
-<p>Unter Arch Linux muss man noch <code>qrencode</code> installieren, wenn man den QR code
+</code></pre></div><p>Unter Arch Linux muss man noch <code>qrencode</code> installieren, wenn man den QR code
 direkt im Browser angezeigt bekommen will</p>
-
-<pre><code class="language-bash"> $ sudo pacman -S qrencode libpam-google-authenticator
-</code></pre>
-
-<p>Als nächstes hangelt man sich durch die interaktive Einrichtung.</p>
-
-<pre><code class="language-bash">$ google-authenticator
-</code></pre>
-
-<p>Die ist sehr selbsterklärend, also verzichte ich auf eine Beschreibung. Ich
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo pacman -S qrencode libpam-google-authenticator
+</code></pre></div><p>Als nächstes hangelt man sich durch die interaktive Einrichtung.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ google-authenticator
+</code></pre></div><p>Die ist sehr selbsterklärend, also verzichte ich auf eine Beschreibung. Ich
 empfehle euch allerdings die ganzen <strong>emergency codes</strong> die ihr am Ende bekommt
 irgendwo ab zu speichern. Im Falle eines Falles sind sie dann da.</p>
-
-<p><img src="/2fa/00.png" alt="img" /></p>
-
+<p><img src="/2fa/00.png" alt="img"></p>
 <p>Diesen QR Code könnt ihr dann mit dem <code>Google Authenticator</code> fotografieren. Und
 zack läuft das Ding schon mal auf eurem Handy.</p>
-
 <h2 id="2-aktivieren-des-moduls">2. Aktivieren des Moduls</h2>
-
 <p>Als nächstes muss noch das Modul für die SSH verbindung aktiviert werden.
 Hierfür müssen zwei Dateien editiert werden. In der <code>/etc/pam.d/sshd</code></p>
-
-<pre><code class="language-config">auth required pam_google_authenticator.so
-</code></pre>
-
-<p>ans Ende anfügen und als zweites, in der <code>/etc/ssh/sshd_config</code></p>
-
-<pre><code class="language-config">ChallengeResponseAuthentication yes
+<pre><code class="language-config" data-lang="config">auth required pam_google_authenticator.so
+</code></pre><p>ans Ende anfügen und als zweites, in der <code>/etc/ssh/sshd_config</code></p>
+<pre><code class="language-config" data-lang="config">ChallengeResponseAuthentication yes
 AuthenticationMethods keyboard-interactive
-</code></pre>
-
-<p>eintragen.</p>
-
+</code></pre><p>eintragen.</p>
 <h2 id="3-ssh-daemon-neu-starten">3. SSH Daemon neu starten</h2>
-
 <pre><code>sudo systemctl restart sshd.service
-</code></pre>
-
-<p>Es ist eine gute Idee die aktuell aktive Shell nicht zu schließen, sondern statt
+</code></pre><p>Es ist eine gute Idee die aktuell aktive Shell nicht zu schließen, sondern statt
 dessen die Verbindung mit einer neuen Shell zu testen. Hier sollte jetzt erst
 nach dem Passwort und dann nach einem <code>Verification code</code> gefragt werden. Beim
 <code>Verification code</code> handelt es sich um den gerade aktiven Google Authenticator
 Key. Beim eingeben des Keys müsst ihr euch übrigens nicht tot hetzen, da immer
 mindestens 3, vielleicht sogar 17 Keys gleichzeitig gültig sind.</p>
-
 <h2 id="4-ssh-key-statt-passwort">4. SSH Key statt Passwort</h2>
-
 <p>Wenn ihr vorher anstelle von Passwörtern ssh Keys verwendet habt, so wie ich,
 dann dürfte euch aufgefallen sein, dass ihr auf einmal trotzdem Passwörter
 eingeben müsst. Der SSH Key wird einfach ignoriert. Dabei ist es auch egal, dass
 ihr bei <code>PasswordAuthentication no</code> eingegeben habt. Der SSH Key wird einfach
 ignoriert.</p>
-
 <p>Bisher habe ich es nicht hinbekommen per default Keys und als Fallback ein
 Passwort zu haben. Stattdessen kann ich euch nur sagen wie man komplett auf das
 Passwort verzichtet.</p>
-
 <p>Öffnet dazu wieder <code>/etc/pam.d/sshd</code> und kommentiert die Zeile:</p>
-
-<pre><code class="language-bash"># Standard Un*x authentication.
-#@include common-auth
-</code></pre>
-
-<p>wie gezeigt aus und startet den SSH Daemon neu.</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Standard Un*x authentication.</span>
+<span style="color:#75715e">#@include common-auth</span>
+</code></pre></div><p>wie gezeigt aus und startet den SSH Daemon neu.</p>
 <p>Im Internet kursieren verschiedene Lösungen die die <code>AuthenticationMethods</code>
 ändern, aber alles was ich bisher ausprobiert habe, hatte nicht den gewünschten
 Effekt. Wer eine Lösung kennt, immer her damit.</p>
-
 <h2 id="quellen">Quellen</h2>
-
 <p><a href="https://hostadvice.com/how-to/how-to-enable-two-factor-authentication-on-ubuntu-18-04-vps/">1</a>
 <a href="https://www.linode.com/docs/security/authentication/use-one-time-passwords-for-two-factor-authentication-with-ssh-on-ubuntu-16-04-and-debian-8/">2</a>
 <a href="https://blog.webnersolutions.com/ubuntu-google-authenticator-not-working-with-ssh-keys">3</a></p>
