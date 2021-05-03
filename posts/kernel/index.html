@@ -89,7 +89,7 @@
 
       
     </div>
-    <h2 class="subtitle is-6">March 8, 2021</h2>
+    <h2 class="subtitle is-6">May 3, 2021</h2>
     <h1 class="title">Testkernel kompilieren</h1>
     
     <div class="content">
@@ -115,11 +115,11 @@ ist grundsätzlich keine schlechte Idee.</p>
 sein.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">make olddefconfig
 </code></pre></div><p>Für den kernel geht das gute alte (Linus will es so) <code>make</code> und <code>make install</code>.
-Ich persönlich versuche aber möglichst wenig an meinem Paktemanager vorbei zu
+Ich persönlich versuche aber möglichst wenig an meinem Paketmanager vorbei zu
 installieren. Auf lange Sicht macht das nur Stress. Zum Glück ist es beim Kernel
 super einfach ein <code>.deb</code> Paket zu bauen:</p>
-<pre><code>make -j 10 bindeb-pkg
-</code></pre><p><code>-j 10</code> bedeutet, dass ich mit 10 threads Kompiliere, was für meinen 8 Kern
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">make -j <span style="color:#ae81ff">10</span> bindeb-pkg
+</code></pre></div><p><code>-j 10</code> bedeutet, dass ich mit 10 threads Kompiliere, was für meinen 8 Kern
 Prozessor okay ist. Je nachdem was du hast, nimm mehr oder weniger <code>Anzahl der Kerne + 2</code> geht meistens gut.</p>
 <p><code>bindeb-pkg</code> sorgt dafür, dass wir installierbare <code>.deb</code> Pakete bekommen. Es gibt
 auch die Option <code>deb-pkg</code> aber bei allen von mir getesteten Systemen ist
@@ -127,15 +127,15 @@ auch die Option <code>deb-pkg</code> aber bei allen von mir getesteten Systemen 
 Ergebnis von obigem <code>make</code> sind dann 4 <code>.deb</code> Dateien. Allerdings landen diese
 Dateien eine Ordner ebene höher. Darum auch der Initiale <code>kernel</code> Ordner im
 ersten Befehl. <code>ls ..</code> zeigt jetzt also u.a.:</p>
-<pre><code>linux-headers-X_X-Y_amd64.deb
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">linux-headers-X_X-Y_amd64.deb
 linux-image-X_X-Y_amd64.deb
 linux-image-X-dbg_X-Y_amd64.deb
 linux-libc-dev-X-Y_amd64.deb
-</code></pre><p>X und Y sind hierbei spezifische versionsnummern. X ergibt sich aus der
+</code></pre></div><p>X und Y sind hierbei spezifische versionsnummern. X ergibt sich aus der
 Kernelversionsnummer und Y ist eine Buildnummer.</p>
 <p>Das Ergebnis kann jetzt installiert und verwendet werden:</p>
-<pre><code>sudo dpkg -i linux-headers-X_X-Y_amd64.deb linux-image-X_X-Y_amd64.deb
-</code></pre><p>Die <code>libc-dev</code> und <code>dbg</code> Pakete sind dabei optional und brauchen nur installiert
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo dpkg -i linux-headers-X_X-Y_amd64.deb linux-image-X_X-Y_amd64.deb
+</code></pre></div><p>Die <code>libc-dev</code> und <code>dbg</code> Pakete sind dabei optional und brauchen nur installiert
 werden, wenn es Probleme gibt. Sie dienen zum debuggen, was, wenn alles geht, ja
 nicht gebraucht wird.</p>
 <p>Danach kann das System bereits neu installiert werden. Dadurch, dass wir die
@@ -143,10 +143,12 @@ nicht gebraucht wird.</p>
 wird über die neue Version informiert. Das simple <code>make install</code> kümmert sich
 zwar auch um grub, aber <code>dkms</code> module sind danach oft kaputt.</p>
 <p>Will man den neuen Kernel wieder los werden, kann man ihn mit apt wieder deinstallieren.</p>
-<pre><code>sudo apt remove linux-headers-X  linux-image-X
-</code></pre><p>Hier natürlich aufpassen, dass man die richtige Version deinstalliert, da man ja
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo apt remove linux-headers-X  linux-image-X
+</code></pre></div><p>Hier natürlich aufpassen, dass man die richtige Version deinstalliert, da man ja
 jetzt mindestens zwei Kernel im System hat. Ich würde keinem empfehlen den
 Default Kernel zu deinstallieren.</p>
+<p>Viel Spaß mit dem Setup
+Deisi</p>
 
       
       <div class="related">

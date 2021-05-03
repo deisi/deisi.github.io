@@ -116,7 +116,7 @@ irgendwo ab zu speichern. Im Falle eines Falles sind sie dann da.</p>
 <p>Diesen QR Code könnt ihr dann mit dem <code>Google Authenticator</code> fotografieren. Und
 zack läuft das Ding schon mal auf eurem Handy.</p>
 <h2 id="2-aktivieren-des-moduls">2. Aktivieren des Moduls</h2>
-<p>Als nächstes muss noch das Modul für die SSH verbindung aktiviert werden.
+<p>Als nächstes muss noch das Modul für die SSH Verbindung aktiviert werden.
 Hierfür müssen zwei Dateien editiert werden. In der <code>/etc/pam.d/sshd</code></p>
 <pre><code class="language-config" data-lang="config">auth required pam_google_authenticator.so
 </code></pre><p>ans Ende anfügen und als zweites, in der <code>/etc/ssh/sshd_config</code></p>
